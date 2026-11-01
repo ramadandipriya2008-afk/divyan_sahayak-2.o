@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bwrBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fff5f5"/><stop offset="100%" stop-color="#fee2e2"/></linearGradient>
+    <linearGradient id="redFrame" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#991b1b"/></linearGradient>
+    <filter id="bwrSh"><feDropShadow dx="0" dy="16" stdDeviation="16" flood-color="#7f1d1d" flood-opacity="0.2"/></filter>
+  </defs>
+  <rect width="600" height="450" rx="20" fill="url(#bwrBg)"/>
+  <circle cx="300" cy="225" r="150" fill="#ffffff" opacity="0.7"/>
+  <g filter="url(#bwrSh)" transform="translate(120, 35)">
+    <!-- Ergonomic loop handles & brake cables -->
+    <path d="M 80 50 L 95 140" stroke="url(#redFrame)" stroke-width="14" stroke-linecap="round"/>
+    <path d="M 280 50 L 265 140" stroke="url(#redFrame)" stroke-width="14" stroke-linecap="round"/>
+    <rect x="65" y="45" width="30" height="15" rx="5" fill="#0f172a"/>
+    <rect x="265" y="45" width="30" height="15" rx="5" fill="#0f172a"/>
+    <!-- Loop Handbrakes -->
+    <path d="M 75 62 C 60 75, 95 90, 85 62" stroke="#475569" stroke-width="3.5" fill="none"/>
+    <path d="M 285 62 C 300 75, 265 90, 275 62" stroke="#475569" stroke-width="3.5" fill="none"/>
+    <!-- Padded Curved Backrest Bar -->
+    <path d="M 75 110 C 180 80, 200 80, 285 110" fill="none" stroke="#0f172a" stroke-width="18" stroke-linecap="round"/>
+    <!-- Padded Rest Seat -->
+    <rect x="105" y="170" width="150" height="25" rx="8" fill="#1e293b"/>
+    <!-- Storage Basket under seat -->
+    <rect x="115" y="195" width="130" height="40" rx="4" fill="#334155" opacity="0.8"/>
+    <g stroke="#64748b" stroke-width="1.5">
+      <line x1="135" y1="195" x2="135" y2="235"/><line x1="160" y1="195" x2="160" y2="235"/>
+      <line x1="185" y1="195" x2="185" y2="235"/><line x1="210" y1="195" x2="210" y2="235"/>
+    </g>
+    <!-- Sturdy 4-leg Rollator Frame -->
+    <line x1="95" y1="140" x2="60" y2="300" stroke="url(#redFrame)" stroke-width="14" stroke-linecap="round"/>
+    <line x1="265" y1="140" x2="300" y2="300" stroke="url(#redFrame)" stroke-width="14" stroke-linecap="round"/>
+    <line x1="120" y1="180" x2="100" y2="300" stroke="url(#redFrame)" stroke-width="12" stroke-linecap="round"/>
+    <line x1="240" y1="180" x2="260" y2="300" stroke="url(#redFrame)" stroke-width="12" stroke-linecap="round"/>
+    <!-- 4 Wheels -->
+    <circle cx="60" cy="305" r="25" fill="#1e293b"/><circle cx="60" cy="305" r="11" fill="#cbd5e1"/>
+    <circle cx="100" cy="305" r="25" fill="#1e293b"/><circle cx="100" cy="305" r="11" fill="#cbd5e1"/>
+    <circle cx="260" cy="305" r="25" fill="#1e293b"/><circle cx="260" cy="305" r="11" fill="#cbd5e1"/>
+    <circle cx="300" cy="305" r="25" fill="#1e293b"/><circle cx="300" cy="305" r="11" fill="#cbd5e1"/>
+  </g>
+  <text x="300" y="405" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#991b1b" text-anchor="middle" letter-spacing="1">FOUR-WHEEL ROLLATOR WITH PADDED SEAT &amp; BASKET</text>
+</svg>

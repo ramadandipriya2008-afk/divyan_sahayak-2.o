@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="itcBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fdfbf9" />
+      <stop offset="100%" stop-color="#f4ece1" />
+    </linearGradient>
+    <linearGradient id="skinTone" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f7d4b2" />
+      <stop offset="50%" stop-color="#dfa97b" />
+      <stop offset="100%" stop-color="#b07647" />
+    </linearGradient>
+    <filter id="itcShadow">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#4a2e14" flood-opacity="0.22" />
+    </filter>
+  </defs>
+  <rect width="600" height="450" rx="20" fill="url(#itcBg)" />
+
+  <g filter="url(#itcShadow)" transform="translate(160, 80)">
+    <!-- Custom Molded In-Canal Body -->
+    <path d="M 120 40 C 200 30, 240 100, 210 180 C 180 230, 110 240, 70 200 C 30 160, 50 100, 80 60 Z" fill="url(#skinTone)" />
+    <!-- Faceplate (outer facing) -->
+    <ellipse cx="160" cy="120" rx="45" ry="55" fill="#2b2621" opacity="0.9" />
+    <ellipse cx="160" cy="120" rx="40" ry="50" fill="#3d352e" />
+    <!-- Battery Door Hatch -->
+    <rect x="140" y="100" width="28" height="24" rx="4" fill="#52483f" stroke="#2b2621" stroke-width="1.5" />
+    <line x1="145" y1="112" x2="163" y2="112" stroke="#d49b6a" stroke-width="2" />
+    <!-- Volume Dial wheel -->
+    <circle cx="178" cy="140" r="9" fill="#1c1815" />
+    <circle cx="178" cy="140" r="7" fill="#806d5b" />
+    <!-- Microphone Port -->
+    <circle cx="145" cy="90" r="3" fill="#14110e" />
+    <!-- Pull String / Extraction Cord -->
+    <path d="M 175 165 C 200 205, 220 230, 230 260" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.75" />
+    <circle cx="230" cy="260" r="4.5" fill="#dfa97b" />
+    <!-- Red dot indicator (Right ear) -->
+    <circle cx="132" cy="145" r="4" fill="#dc2626" />
+  </g>
+  <text x="300" y="395" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#694622" text-anchor="middle" letter-spacing="1">DISCREET IN-THE-CANAL (ITC) CUSTOM AID</text>
+</svg>

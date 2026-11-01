@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f0f9f6" />
+      <stop offset="100%" stop-color="#e1f3ec" />
+    </linearGradient>
+    <linearGradient id="caseGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#2bd1be" />
+      <stop offset="50%" stop-color="#0f8e81" />
+      <stop offset="100%" stop-color="#075b52" />
+    </linearGradient>
+    <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="50%" stop-color="#d6e4df" />
+      <stop offset="100%" stop-color="#9ebdb4" />
+    </linearGradient>
+    <linearGradient id="tubeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+      <stop offset="50%" stop-color="#b8e8dc" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#4abfad" stop-opacity="0.7" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#09473f" flood-opacity="0.18" />
+    </filter>
+  </defs>
+  <rect width="600" height="450" rx="20" fill="url(#bgGrad)" />
+  <circle cx="300" cy="225" r="160" fill="#ffffff" opacity="0.6" />
+
+  <!-- Acoustic soundwaves badge -->
+  <g stroke="#149688" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.4">
+    <path d="M 440 180 A 70 70 0 0 1 440 260" />
+    <path d="M 465 160 A 105 105 0 0 1 465 280" />
+    <path d="M 490 140 A 140 140 0 0 1 490 300" />
+  </g>
+
+  <!-- Hearing Aid Body -->
+  <g filter="url(#shadow)">
+    <!-- Main ergonomic curved housing -->
+    <path d="M 230 110 C 310 95, 360 170, 320 270 C 300 320, 250 340, 210 320 C 180 300, 195 240, 220 200 C 240 170, 225 130, 230 110 Z" fill="url(#caseGrad)" />
+    <!-- Metallic Accent Trim -->
+    <path d="M 245 125 C 315 125, 345 185, 315 265 C 295 305, 255 315, 225 305" fill="none" stroke="url(#silverGrad)" stroke-width="4" stroke-linecap="round" opacity="0.7" />
+    <!-- Microphone Ports -->
+    <circle cx="250" cy="115" r="3.5" fill="#05332e" />
+    <circle cx="280" cy="130" r="3.5" fill="#05332e" />
+    <!-- Rocker Switch -->
+    <rect x="295" y="195" width="8" height="28" rx="4" fill="url(#silverGrad)" />
+    <!-- Battery Door Joint -->
+    <path d="M 200 295 Q 225 330 250 325" fill="none" stroke="#05332e" stroke-width="2.5" />
+    <!-- Clear Acoustic Tube -->
+    <path d="M 230 110 C 200 90, 140 110, 130 180 C 120 250, 160 270, 185 270" fill="none" stroke="url(#tubeGrad)" stroke-width="12" stroke-linecap="round" />
+    <!-- Earhook Connector -->
+    <path d="M 232 112 C 220 102, 190 108, 175 135" fill="none" stroke="url(#silverGrad)" stroke-width="15" stroke-linecap="round" />
+    <!-- Silicone Dome (Ear Canal Tip) -->
+    <ellipse cx="185" cy="270" rx="20" ry="15" fill="#ffffff" opacity="0.85" stroke="#90cfc1" stroke-width="2" />
+    <ellipse cx="192" cy="270" rx="14" ry="10" fill="#2bd1be" opacity="0.4" />
+    <circle cx="185" cy="270" r="5" fill="#0f8e81" />
+  </g>
+  <text x="300" y="405" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0d6d63" text-anchor="middle" letter-spacing="1.5">DIGITAL AUDITORY ASSISTIVE AID</text>
+</svg>

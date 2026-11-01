@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="pockBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#edf2f7" />
+    </linearGradient>
+    <linearGradient id="bodyCase" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e2e8f0" />
+      <stop offset="50%" stop-color="#cbd5e1" />
+      <stop offset="100%" stop-color="#94a3b8" />
+    </linearGradient>
+    <filter id="pockShadow">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#0f172a" flood-opacity="0.2" />
+    </filter>
+  </defs>
+  <rect width="600" height="450" rx="20" fill="url(#pockBg)" />
+
+  <g filter="url(#pockShadow)">
+    <!-- Pocket Unit Main Body -->
+    <rect x="220" y="150" width="160" height="210" rx="16" fill="url(#bodyCase)" stroke="#64748b" stroke-width="2" />
+    
+    <!-- Top Dial / Rotary Gain Control -->
+    <rect x="245" y="130" width="35" height="22" rx="4" fill="#334155" />
+    <line x1="255" y1="130" x2="255" y2="152" stroke="#94a3b8" stroke-width="1.5" />
+    <line x1="265" y1="130" x2="265" y2="152" stroke="#94a3b8" stroke-width="1.5" />
+    
+    <!-- Mic Grille on front -->
+    <g fill="#475569">
+      <circle cx="260" cy="180" r="2.5" />
+      <circle cx="275" cy="180" r="2.5" />
+      <circle cx="290" cy="180" r="2.5" />
+      <circle cx="260" cy="192" r="2.5" />
+      <circle cx="275" cy="192" r="2.5" />
+      <circle cx="290" cy="192" r="2.5" />
+    </g>
+
+    <!-- Clip on unit -->
+    <rect x="330" y="175" width="22" height="100" rx="6" fill="#475569" opacity="0.6" />
+
+    <!-- Tone / N-H-O Switch -->
+    <rect x="250" y="235" width="50" height="18" rx="4" fill="#1e293b" />
+    <circle cx="262" cy="244" r="6" fill="#38bdf8" />
+
+    <!-- Audio Cord output -->
+    <path d="M 335 140 C 335 80, 200 60, 160 110 C 130 150, 140 210, 150 230" fill="none" stroke="#1e293b" stroke-width="4.5" stroke-linecap="round" />
+    <path d="M 160 110 C 140 60, 230 40, 390 50 C 450 60, 460 130, 440 180" fill="none" stroke="#1e293b" stroke-width="4.5" stroke-linecap="round" />
+
+    <!-- Left Earphone -->
+    <g transform="translate(135, 230)">
+      <rect x="0" y="0" width="25" height="18" rx="5" fill="#334155" />
+      <circle cx="25" cy="9" r="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5" />
+      <circle cx="27" cy="9" r="4" fill="#38bdf8" />
+    </g>
+
+    <!-- Right Earphone -->
+    <g transform="translate(425, 180)">
+      <rect x="0" y="0" width="25" height="18" rx="5" fill="#334155" />
+      <circle cx="-2" cy="9" r="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5" />
+      <circle cx="-4" cy="9" r="4" fill="#f43f5e" />
+    </g>
+  </g>
+  <text x="300" y="405" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#334155" text-anchor="middle" letter-spacing="1">HIGH-GAIN POCKET SPEECH AMPLIFIER</text>
+</svg>

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="recBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5f7fa" />
+      <stop offset="100%" stop-color="#e8ecf2" />
+    </linearGradient>
+    <linearGradient id="dockGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3a4454" />
+      <stop offset="100%" stop-color="#1a202c" />
+    </linearGradient>
+    <linearGradient id="deviceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="70%" stop-color="#c9d2de" />
+      <stop offset="100%" stop-color="#8c9aa8" />
+    </linearGradient>
+    <filter id="recShadow">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#111827" flood-opacity="0.25" />
+    </filter>
+  </defs>
+  <rect width="600" height="450" rx="20" fill="url(#recBg)" />
+
+  <g filter="url(#recShadow)">
+    <!-- Charging Case Base -->
+    <ellipse cx="300" cy="270" rx="140" ry="65" fill="url(#dockGrad)" />
+    <ellipse cx="300" cy="260" rx="130" ry="55" fill="#2d3748" />
+    
+    <!-- Dock slots -->
+    <ellipse cx="250" cy="260" rx="30" ry="20" fill="#1a202c" />
+    <ellipse cx="350" cy="260" rx="30" ry="20" fill="#1a202c" />
+
+    <!-- LED Battery Indicator Lights -->
+    <circle cx="280" cy="300" r="3.5" fill="#10b981" />
+    <circle cx="300" cy="302" r="3.5" fill="#10b981" />
+    <circle cx="320" cy="300" r="3.5" fill="#10b981" />
+
+    <!-- Left Hearing Aid standing -->
+    <g transform="translate(235, 120)">
+      <path d="M 25 30 C 50 20, 60 70, 40 120 C 30 145, 10 140, 5 125 C -5 105, 10 70, 20 50 Z" fill="url(#deviceGrad)" />
+      <path d="M 25 30 C 15 15, -15 30, -20 70 C -25 100, -5 120, 5 110" fill="none" stroke="#60a5fa" stroke-width="3" opacity="0.7" />
+      <circle cx="-5" cy="110" r="7" fill="#ffffff" stroke="#93c5fd" stroke-width="1.5" />
+      <circle cx="35" cy="80" r="2.5" fill="#2563eb" />
+    </g>
+
+    <!-- Right Hearing Aid standing -->
+    <g transform="translate(335, 120)">
+      <path d="M 25 30 C 50 20, 60 70, 40 120 C 30 145, 10 140, 5 125 C -5 105, 10 70, 20 50 Z" fill="url(#deviceGrad)" />
+      <path d="M 25 30 C 15 15, -15 30, -20 70 C -25 100, -5 120, 5 110" fill="none" stroke="#ef4444" stroke-width="3" opacity="0.7" />
+      <circle cx="-5" cy="110" r="7" fill="#ffffff" stroke="#fca5a5" stroke-width="1.5" />
+      <circle cx="35" cy="80" r="2.5" fill="#dc2626" />
+    </g>
+  </g>
+  <text x="300" y="395" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#334155" text-anchor="middle" letter-spacing="1">RECHARGEABLE RIC PAIR WITH CHARGING DOCK</text>
+</svg>

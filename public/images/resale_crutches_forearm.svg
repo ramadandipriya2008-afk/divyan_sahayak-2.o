@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="rcfBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fdf4ff"/><stop offset="100%" stop-color="#fae8ff"/></linearGradient>
+    <linearGradient id="gunmetal" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#64748b"/><stop offset="100%" stop-color="#334155"/></linearGradient>
+    <filter id="rcfSh"><feDropShadow dx="0" dy="16" stdDeviation="16" flood-color="#4a044e" flood-opacity="0.18"/></filter>
+  </defs>
+  <rect width="600" height="450" rx="20" fill="url(#rcfBg)"/>
+  <circle cx="300" cy="225" r="150" fill="#ffffff" opacity="0.8"/>
+  <g filter="url(#rcfSh)">
+    <g transform="translate(195, 45) rotate(10 60 160)">
+      <path d="M 20 20 C 20 -10, 80 -10, 80 20 C 80 40, 50 45, 50 65" fill="none" stroke="#701a75" stroke-width="14" stroke-linecap="round"/>
+      <line x1="50" y1="60" x2="50" y2="140" stroke="url(#gunmetal)" stroke-width="12" stroke-linecap="round"/>
+      <path d="M 50 135 L 105 145" stroke="#4a044e" stroke-width="16" stroke-linecap="round"/>
+      <line x1="50" y1="140" x2="50" y2="330" stroke="url(#gunmetal)" stroke-width="11" stroke-linecap="round"/>
+      <circle cx="50" cy="270" r="3" fill="#cbd5e1"/><circle cx="50" cy="290" r="3" fill="#cbd5e1"/>
+      <path d="M 40 330 L 60 330 L 65 355 L 35 355 Z" fill="#2e1065"/>
+    </g>
+    <g transform="translate(295, 45) rotate(-10 60 160)">
+      <path d="M 20 20 C 20 -10, 80 -10, 80 20 C 80 40, 50 45, 50 65" fill="none" stroke="#701a75" stroke-width="14" stroke-linecap="round"/>
+      <line x1="50" y1="60" x2="50" y2="140" stroke="url(#gunmetal)" stroke-width="12" stroke-linecap="round"/>
+      <path d="M 50 135 L -5 145" stroke="#4a044e" stroke-width="16" stroke-linecap="round"/>
+      <line x1="50" y1="140" x2="50" y2="330" stroke="url(#gunmetal)" stroke-width="11" stroke-linecap="round"/>
+      <circle cx="50" cy="270" r="3" fill="#cbd5e1"/><circle cx="50" cy="290" r="3" fill="#cbd5e1"/>
+      <path d="M 40 330 L 60 330 L 65 355 L 35 355 Z" fill="#2e1065"/>
+    </g>
+  </g>
+  <text x="300" y="405" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#701a75" text-anchor="middle" letter-spacing="1">ADJUSTABLE FOREARM CRUTCHES (PAIR)</text>
+</svg>

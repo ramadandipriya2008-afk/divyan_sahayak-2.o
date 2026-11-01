@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bcfBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f0fdf9"/><stop offset="100%" stop-color="#e0f2ec"/></linearGradient>
+    <linearGradient id="tealShaft" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#14b8a6"/><stop offset="100%" stop-color="#0f766e"/></linearGradient>
+    <filter id="bcfSh"><feDropShadow dx="0" dy="16" stdDeviation="16" flood-color="#134e48" flood-opacity="0.18"/></filter>
+  </defs>
+  <rect width="600" height="450" rx="20" fill="url(#bcfBg)"/>
+  <circle cx="300" cy="225" r="150" fill="#ffffff" opacity="0.7"/>
+  <g filter="url(#bcfSh)">
+    <!-- Crutch 1 (Left tilt) -->
+    <g transform="translate(190, 45) rotate(10 60 160)">
+      <!-- Cuff -->
+      <path d="M 20 20 C 20 -10, 80 -10, 80 20 C 80 40, 50 45, 50 65" fill="none" stroke="#134e48" stroke-width="14" stroke-linecap="round"/>
+      <!-- Upper Strut -->
+      <line x1="50" y1="60" x2="50" y2="140" stroke="url(#tealShaft)" stroke-width="12" stroke-linecap="round"/>
+      <!-- Contoured Grip -->
+      <path d="M 50 135 L 105 145" stroke="#0f172a" stroke-width="16" stroke-linecap="round"/>
+      <rect x="85" y="132" width="22" height="12" rx="4" fill="#334155"/>
+      <!-- Lower Telescopic Shaft -->
+      <line x1="50" y1="140" x2="50" y2="330" stroke="url(#tealShaft)" stroke-width="11" stroke-linecap="round"/>
+      <!-- Adjustment Push Pins -->
+      <circle cx="50" cy="260" r="3" fill="#cbd5e1"/>
+      <circle cx="50" cy="280" r="3" fill="#cbd5e1"/>
+      <circle cx="50" cy="300" r="3" fill="#cbd5e1"/>
+      <!-- Anti-slip Suction Ferrule -->
+      <path d="M 40 330 L 60 330 L 65 355 L 35 355 Z" fill="#1e293b"/>
+      <line x1="33" y1="355" x2="67" y2="355" stroke="#0f172a" stroke-width="4" stroke-linecap="round"/>
+    </g>
+    <!-- Crutch 2 (Right tilt) -->
+    <g transform="translate(290, 45) rotate(-10 60 160)">
+      <!-- Cuff -->
+      <path d="M 20 20 C 20 -10, 80 -10, 80 20 C 80 40, 50 45, 50 65" fill="none" stroke="#134e48" stroke-width="14" stroke-linecap="round"/>
+      <!-- Upper Strut -->
+      <line x1="50" y1="60" x2="50" y2="140" stroke="url(#tealShaft)" stroke-width="12" stroke-linecap="round"/>
+      <!-- Contoured Grip -->
+      <path d="M 50 135 L -5 145" stroke="#0f172a" stroke-width="16" stroke-linecap="round"/>
+      <rect x="-10" y="132" width="22" height="12" rx="4" fill="#334155"/>
+      <!-- Lower Telescopic Shaft -->
+      <line x1="50" y1="140" x2="50" y2="330" stroke="url(#tealShaft)" stroke-width="11" stroke-linecap="round"/>
+      <!-- Adjustment Push Pins -->
+      <circle cx="50" cy="260" r="3" fill="#cbd5e1"/>
+      <circle cx="50" cy="280" r="3" fill="#cbd5e1"/>
+      <circle cx="50" cy="300" r="3" fill="#cbd5e1"/>
+      <!-- Anti-slip Suction Ferrule -->
+      <path d="M 40 330 L 60 330 L 65 355 L 35 355 Z" fill="#1e293b"/>
+      <line x1="33" y1="355" x2="67" y2="355" stroke="#0f172a" stroke-width="4" stroke-linecap="round"/>
+    </g>
+  </g>
+  <text x="300" y="405" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0f766e" text-anchor="middle" letter-spacing="1">ADJUSTABLE FOREARM ELBOW CRUTCHES (PAIR)</text>
+</svg>

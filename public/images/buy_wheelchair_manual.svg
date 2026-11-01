@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bwmBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f0f7ff"/><stop offset="100%" stop-color="#e1effe"/></linearGradient>
+    <linearGradient id="blueFrame" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient>
+    <linearGradient id="tireGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#475569"/><stop offset="100%" stop-color="#1e293b"/></linearGradient>
+    <filter id="bwmSh"><feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#1e3a8a" flood-opacity="0.18"/></filter>
+  </defs>
+  <rect width="600" height="450" rx="20" fill="url(#bwmBg)"/>
+  <circle cx="300" cy="225" r="160" fill="#ffffff" opacity="0.7"/>
+  <g filter="url(#bwmSh)" transform="translate(60, 40)">
+    <!-- Backrest handles -->
+    <path d="M 170 80 L 195 90 L 195 190" fill="none" stroke="#64748b" stroke-width="12" stroke-linecap="round"/>
+    <rect x="150" y="75" width="30" height="14" rx="4" fill="#0f172a"/>
+    <!-- Backrest upholstery -->
+    <rect x="190" y="100" width="18" height="110" rx="6" fill="#1e293b"/>
+    <!-- Seat Cushion -->
+    <rect x="190" y="200" width="125" height="20" rx="6" fill="#0f172a"/>
+    <!-- Blue Structural Cross Frame -->
+    <path d="M 200 215 L 290 310" stroke="url(#blueFrame)" stroke-width="14" stroke-linecap="round"/>
+    <path d="M 290 215 L 210 310" stroke="url(#blueFrame)" stroke-width="14" stroke-linecap="round"/>
+    <path d="M 290 215 L 340 290 L 330 330" fill="none" stroke="url(#blueFrame)" stroke-width="12" stroke-linecap="round"/>
+    <!-- Footrest hanger and footplate -->
+    <rect x="315" y="325" width="45" height="10" rx="3" fill="#334155"/>
+    <rect x="200" y="160" width="80" height="12" rx="4" fill="#334155"/>
+    <!-- Main Large Rear Wheel -->
+    <circle cx="210" cy="250" r="95" fill="none" stroke="url(#tireGrad)" stroke-width="14"/>
+    <circle cx="210" cy="250" r="80" fill="none" stroke="#94a3b8" stroke-width="6"/>
+    <!-- Chrome Push Rim -->
+    <circle cx="210" cy="250" r="74" fill="none" stroke="#cbd5e1" stroke-width="5"/>
+    <!-- Wheel Hub & Spokes -->
+    <circle cx="210" cy="250" r="14" fill="#475569"/>
+    <g stroke="#94a3b8" stroke-width="2" opacity="0.6">
+      <line x1="210" y1="160" x2="210" y2="340"/>
+      <line x1="120" y1="250" x2="300" y2="250"/>
+      <line x1="145" y1="185" x2="275" y2="315"/>
+      <line x1="145" y1="315" x2="275" y2="185"/>
+    </g>
+    <!-- Front Caster Wheel & Fork -->
+    <path d="M 340 290 L 345 325" stroke="#64748b" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="345" cy="330" r="24" fill="url(#tireGrad)"/>
+    <circle cx="345" cy="330" r="10" fill="#cbd5e1"/>
+  </g>
+  <text x="300" y="405" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af" text-anchor="middle" letter-spacing="1">CERTIFIED MANUAL OVERHAULED WHEELCHAIR</text>
+</svg>

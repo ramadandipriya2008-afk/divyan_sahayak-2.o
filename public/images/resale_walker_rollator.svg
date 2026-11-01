@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="rwrBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#eff6ff"/><stop offset="100%" stop-color="#dbeafe"/></linearGradient>
+    <linearGradient id="blueRollator" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#1e40af"/></linearGradient>
+    <filter id="rwrSh"><feDropShadow dx="0" dy="16" stdDeviation="16" flood-color="#1e3a8a" flood-opacity="0.2"/></filter>
+  </defs>
+  <rect width="600" height="450" rx="20" fill="url(#rwrBg)"/>
+  <circle cx="300" cy="225" r="150" fill="#ffffff" opacity="0.8"/>
+  <g filter="url(#rwrSh)" transform="translate(120, 35)">
+    <path d="M 80 50 L 95 140" stroke="url(#blueRollator)" stroke-width="14" stroke-linecap="round"/>
+    <path d="M 280 50 L 265 140" stroke="url(#blueRollator)" stroke-width="14" stroke-linecap="round"/>
+    <rect x="65" y="45" width="30" height="15" rx="5" fill="#0f172a"/>
+    <rect x="265" y="45" width="30" height="15" rx="5" fill="#0f172a"/>
+    <path d="M 75 110 C 180 80, 200 80, 285 110" fill="none" stroke="#0f172a" stroke-width="18" stroke-linecap="round"/>
+    <rect x="105" y="170" width="150" height="25" rx="8" fill="#1e293b"/>
+    <line x1="95" y1="140" x2="60" y2="300" stroke="url(#blueRollator)" stroke-width="14" stroke-linecap="round"/>
+    <line x1="265" y1="140" x2="300" y2="300" stroke="url(#blueRollator)" stroke-width="14" stroke-linecap="round"/>
+    <line x1="120" y1="180" x2="100" y2="300" stroke="url(#blueRollator)" stroke-width="12" stroke-linecap="round"/>
+    <line x1="240" y1="180" x2="260" y2="300" stroke="url(#blueRollator)" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="60" cy="305" r="25" fill="#0f172a"/><circle cx="60" cy="305" r="11" fill="#93c5fd"/>
+    <circle cx="100" cy="305" r="25" fill="#0f172a"/><circle cx="100" cy="305" r="11" fill="#93c5fd"/>
+    <circle cx="260" cy="305" r="25" fill="#0f172a"/><circle cx="260" cy="305" r="11" fill="#93c5fd"/>
+    <circle cx="300" cy="305" r="25" fill="#0f172a"/><circle cx="300" cy="305" r="11" fill="#93c5fd"/>
+  </g>
+  <text x="300" y="405" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af" text-anchor="middle" letter-spacing="1">FOUR-WHEEL ROLLATOR (COBALT BLUE)</text>
+</svg>
