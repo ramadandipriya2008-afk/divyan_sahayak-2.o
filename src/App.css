@@ -13,8 +13,8 @@
 .device-timeline-wrapper {
   background: #ffffff;
   border: 1px solid #e2ece8;
-  border-radius: 18px;
-  padding: 24px;
+  border-radius: 16px;
+  padding: 16px 20px;
   box-shadow: 0 4px 18px rgba(19, 143, 131, 0.05);
   transition: all 0.2s ease;
 }
@@ -29,7 +29,7 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
-  padding-bottom: 20px;
+  padding-bottom: 14px;
   border-bottom: 1px solid #edf3f0;
   flex-wrap: wrap;
 }
@@ -75,9 +75,9 @@
 
 /* Horizontal Stepper Pipeline */
 .stepper-bar-container {
-  padding: 20px 10px 18px;
+  padding: 12px 10px 10px;
   border-bottom: 1px solid #edf3f0;
-  margin-bottom: 24px;
+  margin-bottom: 14px;
   overflow-x: auto;
 }
 
@@ -165,15 +165,15 @@
 /* Vertical Timeline Flow */
 .timeline-vertical-flow {
   position: relative;
-  padding-left: 12px;
-  margin-top: 12px;
+  padding-left: 8px;
+  margin-top: 6px;
 }
 
 .timeline-vertical-spine {
   position: absolute;
-  top: 16px;
-  bottom: 26px;
-  left: 26px;
+  top: 14px;
+  bottom: 16px;
+  left: 20px;
   width: 2px;
   background: #e3ece8;
   z-index: 1;
@@ -182,33 +182,35 @@
 .timeline-entry {
   position: relative;
   display: flex;
-  gap: 18px;
-  padding-bottom: 20px;
+  gap: 12px;
+  padding-bottom: 7px;
   cursor: pointer;
 }
 
 .timeline-entry:last-child {
-  padding-bottom: 4px;
+  padding-bottom: 2px;
 }
 
 .timeline-marker {
   position: relative;
   z-index: 2;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 
 .marker-icon {
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   background: #ffffff;
   border: 2px solid #cad6d1;
   color: #7e8f8a;
   display: grid;
   place-items: center;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  box-shadow: 0 0 0 4px #ffffff;
+  box-shadow: 0 0 0 3px #ffffff;
   transition: all 0.2s ease;
 }
 
@@ -222,16 +224,16 @@
   background: #08766d;
   border-color: #08766d;
   color: #ffffff;
-  box-shadow: 0 0 0 5px #d4ede8;
-  transform: scale(1.1);
+  box-shadow: 0 0 0 4px #d4ede8;
+  transform: scale(1.08);
 }
 
 .timeline-content-bubble {
   flex: 1;
   background: #fafcfb;
   border: 1px solid #e7eeeb;
-  border-radius: 13px;
-  padding: 14px 18px;
+  border-radius: 10px;
+  padding: 8px 14px;
   transition: all 0.2s ease;
 }
 
@@ -243,7 +245,7 @@
 .timeline-entry.current .timeline-content-bubble {
   background: #f0faf7;
   border-color: #a4d8cc;
-  box-shadow: 0 2px 10px rgba(19, 143, 131, 0.08);
+  box-shadow: 0 2px 8px rgba(19, 143, 131, 0.08);
 }
 
 .bubble-top {
@@ -251,38 +253,22 @@
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  margin-bottom: 6px;
+  margin-bottom: 2px;
   flex-wrap: wrap;
 }
 
-.bubble-step-tag {
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: #8b9a95;
-  display: block;
-}
-
 .bubble-title {
-  margin: 2px 0 0;
-  font-size: 14px;
+  margin: 0;
+  font-size: 13px;
   font-weight: 700;
   color: #213532;
 }
 
 .bubble-desc {
-  font-size: 12px;
+  font-size: 11.5px;
   color: #556965;
-  margin: 4px 0 8px;
-  line-height: 1.45;
-}
-
-.bubble-detail {
-  padding-top: 6px;
-  border-top: 1px dashed #e1eae6;
-  color: #7b8e89;
-  font-size: 11px;
+  margin: 2px 0 0;
+  line-height: 1.35;
 }
 
 .timeline-info-banner {

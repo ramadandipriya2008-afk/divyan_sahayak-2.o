@@ -252,4 +252,15 @@ export function IconHearingAid({ size = 20, color = "currentColor", strokeWidth 
   );
 }
 
+export function IconProsthetic({ size = 20, color = "currentColor", strokeWidth = 2, className = "" }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={`icon ${className}`}>
+      <path d="M12 2v6" />
+      <path d="M9 8h6l-1 5a5 5 0 0 1-5 4.5H8" />
+      <path d="M8 17.5c2.5 0 5 .8 6.5 2.5h-9" />
+      <circle cx="12" cy="2" r="1.5" fill={color} />
+    </svg>
+  );
+}
+
 

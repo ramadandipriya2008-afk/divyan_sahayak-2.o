@@ -30,13 +30,17 @@ import {
 import { translations, getTranslation } from "./translations";
 
 const initialDevices = [
+  { id:"DS-D-24072", name:"Reciprocal folding walking frame", category:"Walker", condition:"Working", state:"Andhra Pradesh", district:"Vijayawada", date:"29 Oct 2026", status:"Allocated & Delivered", qty:2, stage:7, image:"/images/walker_folding.png" },
+  { id:"DS-D-24073", name:"Four-wheel rollator with seat & brakes", category:"Walker", condition:"Repairable", state:"Telangana", district:"Warangal", date:"30 Oct 2026", status:"Refurbishment in Progress", qty:1, stage:5, image:"/images/walker_rollator.png" },
+  { id:"DS-D-24074", name:"Discreet in-the-canal digital hearing aid", category:"Hearing Aid", condition:"Working", state:"Telangana", district:"Secunderabad", date:"31 Oct 2026", status:"Technical Inspection", qty:1, stage:4, image:"/images/hearing_aid_digital.jpg" },
+  { id:"DS-D-24076", name:"Standard chrome hospital wheelchair", category:"Wheelchair", condition:"Working", state:"Telangana", district:"Hyderabad", date:"02 Nov 2026", status:"Allocated & Delivered", qty:2, stage:7, image:"/images/wheelchair_manual.png" },
   { id:"DS-D-24018", name:"Folding manual wheelchair", category:"Wheelchair", condition:"Repairable", state:"Telangana", district:"Hyderabad", date:"13 Oct 2026", status:"Inspection Pending", qty:1, stage:4, image:"/images/wheelchair_manual.png" },
   { id:"DS-D-24012", name:"Adjustable elbow crutches", category:"Crutches", condition:"Working", state:"Telangana", district:"Hyderabad", date:"08 Oct 2026", status:"Collection Scheduled", qty:2, stage:2, image:"/images/crutches_forearm.png" },
   { id:"DS-D-24025", name:"Digital BTE Hearing Aid", category:"Hearing Aid", condition:"Working", state:"Telangana", district:"Hyderabad", date:"15 Oct 2026", status:"Technical Inspection", qty:1, stage:4, image:"/images/hearing_aid_digital.jpg" },
   { id:"DS-D-24031", name:"Compact transit travel wheelchair", category:"Wheelchair", condition:"Working", state:"Telangana", district:"Secunderabad", date:"16 Oct 2026", status:"Refurbishment in Progress", qty:1, stage:5, image:"/images/wheelchair_transit.png" },
   { id:"DS-D-24036", name:"Standard reciprocal folding walker", category:"Walker", condition:"Working", state:"Telangana", district:"Warangal", date:"18 Oct 2026", status:"Quality Certified", qty:2, stage:6, image:"/images/walker_folding.png" },
   { id:"DS-D-24040", name:"Four-wheel rollator with padded seat", category:"Walker", condition:"Repairable", state:"Andhra Pradesh", district:"Vijayawada", date:"20 Oct 2026", status:"Hub Intake & Verification", qty:1, stage:3, image:"/images/walker_rollator.png" },
-  { id:"DS-D-24045", name:"Underarm axillary crutches (pair)", category:"Crutches", condition:"Working", state:"Andhra Pradesh", district:"Visakhapatnam", date:"22 Oct 2026", status:"Collection Scheduled", qty:3, stage:2, image:"/images/crutches_underarm.png" },
+  { id:"DS-D-24045", name:"Underarm axillary crutches (pair)", category:"Crutches", condition:"Working", state:"Andhra Pradesh", district:"Visakhapatnam", date:"22 Oct 2026", status:"Collection Scheduled", qty:3, stage:2, image:"/images/crutches_axillary_pair.jpg" },
   { id:"DS-D-24049", name:"Rechargeable RIC Hearing Aid", category:"Hearing Aid", condition:"Working", state:"Telangana", district:"Hyderabad", date:"23 Oct 2026", status:"Allocated & Delivered", qty:1, stage:7, image:"/images/hearing_aid_rechargeable.jpg" },
   { id:"DS-D-24053", name:"Pediatric lightweight wheelchair", category:"Wheelchair", condition:"Working", state:"Telangana", district:"Khammam", date:"24 Oct 2026", status:"Submission Received", qty:1, stage:1, image:"/images/wheelchair_pediatric.jpg" },
   { id:"DS-D-24058", name:"Two-wheeled steerable walking frame", category:"Walker", condition:"Working", state:"Andhra Pradesh", district:"Guntur", date:"25 Oct 2026", status:"Technical Inspection", qty:2, stage:4, image:"/images/walker_steerable.jpg" },
@@ -46,64 +50,75 @@ const initialDevices = [
 const listings = [
   {
     id: "RS-RESALE-01",
-    name: "Folding Manual Wheelchair · Standard Adult (18\")",
+    name: "Triple-Chrome Carbon Steel Hospital Wheelchair",
     category: "Wheelchair",
-    price: 8500,
+    price: 4200,
     location: "Hyderabad, Telangana",
-    material: "Chrome-Plated Carbon Steel",
+    material: "Triple-Chrome Plated Carbon Steel",
     size: "18\" Seat Width (Standard Adult)",
-    desc: "Dual cross-brace frame with self-propelling 24\" spoke wheels, solid puncture-proof tires, and companion parking brake.",
+    desc: "Heavy-duty cross-brace hospital frame with self-propelling 24\" spoke wheels, solid puncture-proof tires, companion parking brake, and wipe-clean vinyl upholstery.",
     image: "/images/wheelchair_manual.png"
   },
   {
     id: "RS-RESALE-02",
-    name: "Compact Travel Transit Wheelchair · Light Alloy",
+    name: "Aircraft Aluminum Active Transit Wheelchair",
     category: "Wheelchair",
-    price: 6200,
+    price: 6800,
     location: "Secunderabad, Telangana",
-    material: "Aircraft-Grade T6 Aluminum",
+    material: "Aircraft-Grade 7000 Anodized Aluminum",
     size: "16\" Seat Width (Compact Travel)",
-    desc: "Ultra-compact travel transit frame with fold-down backrest, attendant companion handbrakes, and 8\" heavy-duty casters.",
+    desc: "Ultra-compact travel transit frame with fold-down backrest, attendant loop handbrakes, and 8\" heavy-duty solid rubber casters.",
     image: "/images/wheelchair_transit.png"
   },
   {
     id: "RS-RESALE-03",
-    name: "Pediatric Junior Wheelchair (14\" Seat)",
+    name: "High-Modulus 3K Carbon-Fiber Active Wheelchair",
     category: "Wheelchair",
-    price: 9200,
-    location: "Warangal, Telangana",
-    material: "Lightweight Aluminum Alloy",
-    size: "14\" Seat Width (Pediatric / Youth)",
-    desc: "Designed for children and youth with flip-up desk armrests, quick-release rear wheels, anti-tippers, and padded pediatric harness.",
-    image: "/images/wheelchair_pediatric.jpg"
+    price: 21500,
+    location: "Bengaluru, Karnataka",
+    material: "Multi-Ply 3K Carbon Fiber Monocoque",
+    size: "16\" Seat Width · 6.9 kg Ultra-Light",
+    desc: "State-of-the-art monocoque carbon-fiber active wheelchair with carbon side guards, quick-release sport wheels, and breathable mesh upholstery.",
+    image: "/images/wheelchair_carbon.jpg"
   },
   {
     id: "RS-RESALE-04",
-    name: "Heavy-Duty Bariatric Wheelchair (22\" Extra-Wide)",
+    name: "Aerospace Titanium Rigid Active Wheelchair",
     category: "Wheelchair",
-    price: 11500,
-    location: "Vijayawada, Andhra Pradesh",
-    material: "Reinforced Heavy Gauge Steel",
-    size: "22\" Seat Width (Bariatric · 140 kg)",
-    desc: "Double-reinforced cross-brace supporting up to 140 kg with heavy-duty vinyl upholstery, padded armrests, and swing-away leg rests.",
-    image: "/images/wheelchair_active.jpg"
+    price: 18900,
+    location: "Visakhapatnam, Andhra Pradesh",
+    material: "Grade 9 Seamless Aerospace Titanium",
+    size: "17\" Custom Active Fit · Minimalist Open Frame",
+    desc: "Minimalist brushed aerospace titanium tubular chassis offering unmatched road vibration dampening, custom center-of-gravity balance, and high-performance spoked rear wheels.",
+    image: "/images/wheelchair_titanium.jpg"
   },
   {
     id: "RS-RESALE-05",
-    name: "Orthopedic High-Back Reclining Wheelchair",
+    name: "AZ31B Magnesium Alloy Ergonomic Active Wheelchair",
     category: "Wheelchair",
-    price: 13800,
-    location: "Visakhapatnam, Andhra Pradesh",
-    material: "Structural Tubular Steel",
-    size: "18\" Seat Width with High-Back Extension",
-    desc: "Full 90° to 180° backrest recline with detachable headrest, elevating leg-rests, and hydraulic anti-tipping safety bars.",
-    image: "/images/wheelchair_comfort.jpg"
+    price: 15400,
+    location: "Hyderabad, Telangana",
+    material: "Ultra-Light AZ31B Magnesium Alloy Chassis",
+    size: "16.5\" Ergonomic Ergofit Seating",
+    desc: "Advanced magnesium alloy chassis weighing 33% less than aluminum with natural road-vibration absorption, ergonomic pressure-relief seating, and swift folding design.",
+    image: "/images/wheelchair_active.jpg"
   },
   {
     id: "RS-RESALE-06",
+    name: "Pediatric Youth Lightweight Wheelchair",
+    category: "Wheelchair",
+    price: 7900,
+    location: "Warangal, Telangana",
+    material: "Lightweight Hydroformed Aluminum Alloy",
+    size: "14\" Seat Width (Pediatric / Youth)",
+    desc: "Child-proportioned frame with flip-up desk armrests, quick-release rear wheels, swing-away anti-tippers, and padded pediatric safety belt.",
+    image: "/images/wheelchair_pediatric.jpg"
+  },
+  {
+    id: "RS-RESALE-07",
     name: "Adjustable Forearm Elbow Crutches (Pair)",
     category: "Crutches",
-    price: 1250,
+    price: 8500,
     location: "Hyderabad, Telangana",
     material: "Gunmetal Gray Aluminum Alloy",
     size: "Adult Adjustable (Height 4'10\" – 6'2\")",
@@ -111,54 +126,76 @@ const listings = [
     image: "/images/crutches_forearm.png"
   },
   {
-    id: "RS-RESALE-07",
-    name: "Shock-Absorbing Spring Forearm Crutches (Pair)",
+    id: "RS-RESALE-08",
+    name: "Carbon-Fiber Ultra-Light Ergonomic Forearm Crutches (Pair)",
     category: "Crutches",
-    price: 1850,
-    location: "Karimnagar, Telangana",
-    material: "Titanium-Aluminum Composite",
-    size: "Universal Adult (Height 5'0\" – 6'4\")",
-    desc: "Built-in internal coil spring damper absorbing 35% of ground impact shock on wrists and elbows, with ergonomic contour grips.",
-    image: "/images/crutches_spring.jpg"
+    price: 2600,
+    location: "Bengaluru, Karnataka",
+    material: "Pure 3K Twill Carbon Fiber & Magnesium Cuffs",
+    size: "Universal Height (Height 5'0\" – 6'4\")",
+    desc: "Ultralight continuous carbon fiber construction weighing only 310 grams per unit, absorbing ground vibrations and relieving wrist strain.",
+    image: "/images/crutches_forearm_pair.jpg"
   },
   {
-    id: "RS-RESALE-08",
+    id: "RS-RESALE-09",
     name: "Axillary Underarm Crutches Pair · Standard Adult",
     category: "Crutches",
-    price: 900,
+    price: 1300,
     location: "Vijayawada, Andhra Pradesh",
-    material: "Dual-Strut Lightweight Aluminum",
+    material: "Extruded 6061-T6 Anodized Aluminum",
     size: "Standard Adult (Height 5'2\" – 5'10\")",
     desc: "Solid dual-bow aluminum struts with washable closed-cell foam underarm pads, push-pin handgrip adjustments, and suction ferrules.",
     image: "/images/crutches_axillary_pair.jpg"
   },
   {
-    id: "RS-RESALE-09",
+    id: "RS-RESALE-10",
+    name: "Heavy-Duty Hospital Axillary Underarm Crutches (Pair)",
+    category: "Crutches",
+    price: 600,
+    location: "Visakhapatnam, Andhra Pradesh",
+    material: "Heavy-Gauge Reinforced Aluminum",
+    size: "Tall Adult (Height 5'10\" – 6'6\")",
+    desc: "Reinforced bridge construction with extra-dense hypoallergenic underarm cushions, dual push-pins, and jumbo slip-resistant suction feet.",
+    image: "/images/crutches_hospital.jpg"
+  },
+  {
+    id: "RS-RESALE-11",
+    name: "Shock-Absorbing Spring Forearm Crutches (Pair)",
+    category: "Crutches",
+    price: 7999,
+    location: "Karimnagar, Telangana",
+    material: "Titanium-Aluminum Composite & High-Tensile Spring",
+    size: "Universal Adult (Height 5'0\" – 6'4\")",
+    desc: "Internal coil spring suspension absorbing up to 40% of ground impact shock on wrists, elbows, and rotator cuffs.",
+    image: "/images/crutches_spring.jpg"
+  },
+  {
+    id: "RS-RESALE-12",
     name: "Pediatric Youth Underarm Crutches (Pair)",
     category: "Crutches",
-    price: 850,
+    price: 1150,
     location: "Guntur, Andhra Pradesh",
     material: "Lightweight Anodized Aluminum",
     size: "Youth / Junior (Height 4'2\" – 5'2\")",
     desc: "Child-proportioned underarm struts with soft hypoallergenic foam pads, easy wing-nut adjustment, and high-traction rubber ferrules.",
-    image: "/images/crutches_underarm.png"
+    image: "/images/crutches_axillary_pair.jpg"
   },
   {
-    id: "RS-RESALE-10",
+    id: "RS-RESALE-13",
     name: "Standard Reciprocal Stepping Folding Walker",
     category: "Walker",
-    price: 1800,
+    price: 1259,
     location: "Hyderabad, Telangana",
-    material: "Bronze-Anodized Aluminum",
+    material: "Bronze-Anodized Aircraft Aluminum",
     size: "Width 24\" · Height Adjustable 31\"–38\"",
     desc: "Articulated swivel frame allowing reciprocal step-by-step advance, 1-inch aluminum tubing, and non-marking rubber feet.",
     image: "/images/walker_folding.png"
   },
   {
-    id: "RS-RESALE-11",
+    id: "RS-RESALE-14",
     name: "Two-Wheeled Steerable Walker with Rear Glides",
     category: "Walker",
-    price: 2400,
+    price: 2569,
     location: "Warangal, Telangana",
     material: "Lightweight Tubular Aluminum",
     size: "Doorway Width 23\" · 120 kg Load",
@@ -166,40 +203,29 @@ const listings = [
     image: "/images/walker_steerable.jpg"
   },
   {
-    id: "RS-RESALE-12",
+    id: "RS-RESALE-15",
     name: "Deluxe Four-Wheel Rollator with Padded Rest Seat",
     category: "Walker",
     price: 3200,
     location: "Mysuru, Karnataka",
-    material: "Cobalt-Coated Carbon Steel",
+    material: "Cobalt-Coated Carbon Steel Frame",
     size: "Seat Width 16\" · 8\" Heavy Wheels",
-    desc: "Four 8-inch all-terrain wheels, loop handbrake locks, padded rest seat with back support, and detachable under-seat basket.",
+    desc: "Four 8-inch all-terrain wheels, loop handbrake locks, padded rest seat with curved back support, and detachable under-seat basket.",
     image: "/images/walker_rollator_seat.jpg"
   },
   {
-    id: "RS-RESALE-13",
-    name: "Carbon-Fiber Ultra-Lightweight Rollator",
-    category: "Walker",
-    price: 4600,
-    location: "Bengaluru, Karnataka",
-    material: "3K Carbon-Fiber & Magnesium",
-    size: "Ultra-Light 4.8 kg · 135 kg Load",
-    desc: "Premium lightweight carbon frame weighing only 4.8 kg with cross-folding mechanism, ergonomic brake handles, and carrying tote bag.",
-    image: "/images/rollator_carbon_green.png"
-  },
-  {
-    id: "RS-RESALE-14",
+    id: "RS-RESALE-16",
     name: "Discreet In-The-Canal (ITC) Digital Hearing Aid",
     category: "Hearing Aid",
-    price: 2400,
+    price: 2800,
     location: "Hyderabad, Telangana",
-    material: "Medical Silicone & Micro-Electronic Shell",
+    material: "Medical-Grade Hypoallergenic Acrylic Shell",
     size: "Custom Ear Canal Fit (Left / Right)",
     desc: "Miniaturized in-canal shell with rotary thumbwheel volume control, 12-channel speech clarity DSP, and moisture-resistant nano-coating.",
-    image: "/images/hearing_aid_itc.jpg"
+    image: "/images/hearing_aid_digital.jpg"
   },
   {
-    id: "RS-RESALE-15",
+    id: "RS-RESALE-17",
     name: "Digital BTE Hearing Aid with Directional Mics",
     category: "Hearing Aid",
     price: 3800,
@@ -210,7 +236,7 @@ const listings = [
     image: "/images/hearing_aid_digital.jpg"
   },
   {
-    id: "RS-RESALE-16",
+    id: "RS-RESALE-18",
     name: "Rechargeable RIC Hearing Aid with Charging Case",
     category: "Hearing Aid",
     price: 5400,
@@ -219,6 +245,17 @@ const listings = [
     size: "Receiver-In-Canal · Miniature",
     desc: "Modern rechargeable in-canal receiver with magnetic desktop dock, 28 hours active use per charge, and Bluetooth audio compatibility.",
     image: "/images/hearing_aid_rechargeable.jpg"
+  },
+  {
+    id: "RS-RESALE-19",
+    name: "Multi-Memory Digital BTE Hearing Aid Pair",
+    category: "Hearing Aid",
+    price: 4900,
+    location: "Nizamabad, Telangana",
+    material: "Impact-Resistant Polycarbonate Shell",
+    size: "Behind-The-Ear with Comfort Silicone Ear Tip",
+    desc: "Programmable environmental noise-reduction modes, dual omni-directional microphones, and telephone telecoil support.",
+    image: "/images/hearing_aid_bte.jpg"
   }
 ];
 const initialNotices = [
@@ -322,17 +359,19 @@ const DEVICE_TYPES = [
     icon: IconWheelchair,
     badge: "Primary Mobility Aid",
     summary: "Seated mobility devices restoring personal independence, clinical transit, and outdoor travel.",
-    description: "Built for individuals with significant lower-limb mobility impairment, spinal injuries, or bilateral amputations. Engineered for structural rigidity, ease of vehicle transit, and comfortable ergonomic seating.",
+    description: "Built for individuals with significant lower-limb mobility impairment, spinal injuries, or bilateral amputations. Engineered for structural rigidity, ease of vehicle transit, and comfortable ergonomic seating across multiple high-strength materials.",
     variants: [
+      { name: "Standard Chrome Hospital Wheelchair", desc: "Heavy-duty triple-chrome cross-brace steel frame with self-propelling 24\" rear wheels and companion parking brakes." },
       { name: "Folding Manual Wheelchair", desc: "Dual cross-brace frame with self-propelling 24\" rear wheels and hand rims." },
       { name: "Transit Wheelchair", desc: "Lightweight compact frame with 8\" rear caster wheels and attendant handbrakes." },
-      { name: "High-Back Reclining Wheelchair", desc: "Extended headrest with adjustable back angle for prolonged seated posture." },
+      { name: "High-Modulus 3K Carbon-Fiber Sport Wheelchair", desc: "Monocoque carbon active chassis weighing under 7 kg for effortless independent propulsion." },
+      { name: "Aerospace Titanium Rigid Active Wheelchair", desc: "Seamless Grade 9 titanium open frame with minimalist chassis absorbing road vibration." },
       { name: "Pediatric Junior Wheelchair", desc: "Compact 14\" seat width with flip-up armrests for growing children." }
     ],
     specs: [
       { label: "Weight Capacity", value: "100 – 135 kg" },
       { label: "Seat Width Options", value: "14\", 16\", 18\", 20\", 22\"" },
-      { label: "Frame Material", value: "Mild steel / Aircraft aluminum" },
+      { label: "Frame Materials", value: "Triple-chrome steel / Aircraft aluminum / 3K Carbon / Grade 9 Titanium" },
       { label: "Wheel Type", value: "Solid puncture-proof PU / Spoke rims" }
     ],
     checklist: [
@@ -350,9 +389,11 @@ const DEVICE_TYPES = [
     icon: IconCrutches,
     badge: "Weight-Bearing Aid",
     summary: "Upper-body weight transfer supports for unilateral lower-limb injuries, post-surgery, or gait stability.",
-    description: "Designed to shift body weight from an injured or affected leg to the torso and arms. Available in forearm elbow cuff and traditional axillary underarm configurations.",
+    description: "Designed to shift body weight from an injured or affected leg to the torso and arms. Available in forearm elbow cuff, heavy-duty hospital underarm, and shock-absorbing spring configurations.",
     variants: [
       { name: "Adjustable Elbow / Forearm Crutches", desc: "Ergonomic molded arm cuff with contour grip and incremental height push-pins." },
+      { name: "Carbon-Fiber Ultra-Lightweight Forearm Crutches", desc: "Continuous 3K twill carbon fiber construction weighing only 310 grams per unit." },
+      { name: "Heavy-Duty Hospital Axillary Underarm Crutches", desc: "Extruded 6061-T6 dual aluminum struts with closed-cell washable foam pads." },
       { name: "Axillary (Underarm) Crutches", desc: "Padded foam underarm rests with dual aluminum struts and center handgrips." },
       { name: "Shock-Absorbing Spring-Tip Crutches", desc: "Internal spring mechanism reducing impact stress on wrists and shoulders." }
     ],
@@ -377,15 +418,15 @@ const DEVICE_TYPES = [
     icon: IconWalker,
     badge: "Balance & Gait Support",
     summary: "Four-point wide base frames providing multi-directional balance for elderly mobility and neurological rehabilitation.",
-    description: "Provides maximum stability for individuals experiencing general balance loss, Parkinson's disease, or gait unsteadiness. Wide stance allows confidence without requiring heavy wrist grip.",
+    description: "Provides maximum stability for individuals experiencing general balance loss, post-stroke recovery, or gait unsteadiness. Wide stance allows confidence without requiring heavy wrist grip.",
     variants: [
       { name: "Standard Reciprocal Folding Walker", desc: "Articulated side frames enabling alternating reciprocal step-forward movement." },
+      { name: "Reciprocal Folding Walking Frame", desc: "Lightweight 1-inch aluminum frame with dual-release folding triggers." },
       { name: "Two-Wheeled Steerable Walker", desc: "Front 5\" caster wheels for smooth stride glide with rear non-skid rubber feet." },
-      { name: "Four-Wheel Rollator with Rest Seat", desc: "Padded rest seat, shopping basket, and loop handbrakes for outdoor walking." },
-      { name: "Heavy-Duty Bariatric Rollator", desc: "Reinforced 180kg capacity with extra-wide padded seat." }
+      { name: "Four-Wheel Rollator with Rest Seat & Brakes", desc: "Padded rest seat, under-seat shopping basket, and loop handbrakes for outdoor walking." }
     ],
     specs: [
-      { label: "Weight Capacity", value: "110 – 180 kg" },
+      { label: "Weight Capacity", value: "110 – 140 kg" },
       { label: "Base Width", value: "23\" – 26\" (doorway fit)" },
       { label: "Folded Depth", value: "4 inches (flat storage)" },
       { label: "Unit Weight", value: "2.4 – 6.5 kg lightweight alloy" }
@@ -407,9 +448,10 @@ const DEVICE_TYPES = [
     summary: "Digital acoustic sound processing devices restoring speech clarity, tone discrimination, and communication independence.",
     description: "Designed for individuals with mild to profound sensorineural or conductive hearing loss. Features digital multi-channel DSP noise suppression, feedback cancellation, and speech clarity enhancement.",
     variants: [
-      { name: "Digital BTE (Behind-The-Ear) Aid", desc: "Ergonomic casing seated behind the ear with clear acoustic sound tube." },
-      { name: "Rechargeable RIC (Receiver-In-Canal)", desc: "Miniature in-ear speaker with magnetic desktop charging dock." },
-      { name: "Discreet Custom In-The-Canal (ITC)", desc: "Shell fitting directly in the ear canal with rotary volume dial." }
+      { name: "Discreet Custom In-The-Canal (ITC) Aid", desc: "Miniaturized shell fitting directly in the ear canal with rotary volume thumbwheel and speech DSP." },
+      { name: "Digital BTE (Behind-The-Ear) Aid", desc: "Ergonomic casing seated behind the ear with clear acoustic sound tube and directional microphones." },
+      { name: "Rechargeable RIC (Receiver-In-Canal) with Charging Case", desc: "Miniature in-ear speaker with magnetic desktop charging dock and 28-hr runtime." },
+      { name: "Multi-Memory Digital BTE Hearing Aid Pair", desc: "Binaural DSP processor with dual directional mics, background noise suppression, and telecoil." }
     ],
     specs: [
       { label: "Frequency Range", value: "200 Hz – 8,500 Hz" },
@@ -507,7 +549,7 @@ const donatedStoreCatalog = [
     donationId: "DS-D-23801",
     name: "Underarm axillary crutches (pair)",
     category: "Crutches",
-    image: "/images/crutches_underarm.png",
+    image: "/images/crutches_axillary_pair.jpg",
     handlingPrice: 280,
     originalValue: 1100,
     condition: "Refurbished · Grade A",
@@ -610,17 +652,17 @@ const donatedStoreCatalog = [
   {
     id: "DON-BUY-13",
     donationId: "DS-D-23588",
-    name: "Heavy-Duty Bariatric Rollator (180 kg Capacity)",
+    name: "Standard Reciprocal Stepping Folding Walker",
     category: "Walker",
-    image: "/images/rollator_graphite.png",
-    handlingPrice: 1450,
-    originalValue: 7200,
+    image: "/images/walker_folding.png",
+    handlingPrice: 520,
+    originalValue: 2600,
     condition: "Refurbished · Grade A+",
     hub: "Visakhapatnam Hub, Andhra Pradesh",
-    specs: "Reinforced steel frame, extra-wide padded rest seat, heavy-duty loop brakes",
-    cert: "180kg Load Stress Certified",
-    qtyAvailable: 2,
-    donorNote: "Tested to 180kg static load; brake cables tensioned and aligned."
+    specs: "1-inch anodized aluminum tubing, dual-release folding paddle, non-slip contoured handgrips",
+    cert: "Hinge Rigidity & Stability Certified",
+    qtyAvailable: 3,
+    donorNote: "Fully sanitized with new non-marking rubber feet and calibrated push-button height adjusters."
   },
   {
     id: "DON-BUY-14",
@@ -943,8 +985,11 @@ export default function App() {
   const [page,setPage] = useState("donations");
   const [devices,setDevices] = useState(() => {
     const saved = read("ds-devices", null);
-    const hasSvg = saved && saved.some(d => d.image && d.image.endsWith('.svg'));
-    return (saved && saved.length >= 8 && !hasSvg) ? saved : initialDevices;
+    if (!saved) return initialDevices;
+    const cleaned = saved.filter(d => !d.name.toLowerCase().includes("blade") && d.category !== "Prosthetics");
+    const requiredIds = ["DS-D-24072", "DS-D-24073", "DS-D-24074", "DS-D-24076"];
+    const hasRequired = requiredIds.every(id => cleaned.some(d => d.id === id));
+    return hasRequired ? cleaned : initialDevices;
   });
   const [selectedDeviceType, setSelectedDeviceType] = useState(null);
   const [selectedStatusDevice, setSelectedStatusDevice] = useState(null);
@@ -962,6 +1007,8 @@ export default function App() {
   const [inventoryCondition,setInventoryCondition] = useState("All conditions");
   const [stageFilter,setStageFilter] = useState("All stages");
   const [deviceTypeFilter,setDeviceTypeFilter] = useState("All device types");
+  const [inventoryTab,setInventoryTab] = useState("items");
+  const [inventorySearch,setInventorySearch] = useState("");
   const [purchases,setPurchases] = useState(()=>read("ds-purchases",initialPurchases));
   const [purchasingItem,setPurchasingItem] = useState(null);
   const [purchaseTab,setPurchaseTab] = useState("available");
@@ -1027,8 +1074,18 @@ export default function App() {
     const matchesSearch = (item.name + " " + item.category + " " + item.hub + " " + item.donationId).toLowerCase().includes(purchaseSearch.toLowerCase());
     return matchesCat && matchesSearch;
   }), [purchaseCategory, purchaseSearch]);
+  const filteredInventoryItems = useMemo(() => donatedStoreCatalog.filter(item => {
+    const matchesCat = deviceTypeFilter === "All device types" ||
+      item.category.toLowerCase().includes(deviceTypeFilter.toLowerCase()) ||
+      (deviceTypeFilter === "Wheelchairs" && item.category === "Wheelchair") ||
+      (deviceTypeFilter === "Walkers" && item.category === "Walker") ||
+      (deviceTypeFilter === "Crutches" && item.category === "Crutches") ||
+      (deviceTypeFilter === "Hearing Aids" && item.category === "Hearing Aid");
+    const matchesSearch = (item.name + " " + item.category + " " + item.specs + " " + item.hub + " " + item.donationId).toLowerCase().includes(inventorySearch.toLowerCase());
+    return matchesCat && matchesSearch;
+  }), [deviceTypeFilter, inventorySearch]);
   const title = currentNavItems.find(n=>n[0]===page)?.[2] || t.dashboard;
-  const go = p => {setSelectedStatusDevice(null);setSelectedDeviceType(null);if(p==="upgrade"){setPage("profile");setProfileTab("upgrade");}else{setPage(p);}setSearch("");setCategory("All categories");setStageFilter("All stages");setDeviceTypeFilter("All device types");setPurchaseCategory("All categories");setPurchaseSearch("");window.scrollTo({top:0,behavior:"smooth"});};
+  const go = p => {setSelectedStatusDevice(null);setSelectedDeviceType(null);if(p==="upgrade"){setPage("profile");setProfileTab("upgrade");}else{setPage(p);}setSearch("");setCategory("All categories");setStageFilter("All stages");setDeviceTypeFilter("All device types");setPurchaseCategory("All categories");setPurchaseSearch("");setInventorySearch("");window.scrollTo({top:0,behavior:"smooth"});};
 
   function submitPurchase(e){
     e.preventDefault();
@@ -1941,12 +1998,20 @@ export default function App() {
                     <tr key={d.id}>
                       <td>
                         <div style={{display:"flex", alignItems:"center", gap:"12px"}}>
-                          <img 
-                            src={d.image || (d.category === "Crutches" ? "/images/crutches_forearm.png" : d.category === "Walker" ? "/images/walker_folding.png" : d.category === "Hearing Aid" ? "/images/hearing_aid_digital.jpg" : "/images/wheelchair_manual.png")} 
-                            alt={d.name} 
-                            style={{width:48, height:48, objectFit:"contain", borderRadius:10, background:"#f8faf9", border:"1px solid #e2ece8", padding:3, flexShrink:0}}
-                            onError={e => { e.target.style.display = "none"; }} 
-                          />
+                          <div style={{position:"relative", width:48, height:48, flexShrink:0}}>
+                            <img 
+                              src={d.image || (d.category === "Crutches" ? "/images/crutches_forearm.png" : d.category === "Walker" ? "/images/walker_folding.png" : d.category === "Hearing Aid" ? "/images/hearing_aid_digital.jpg" : "/images/wheelchair_manual.png")} 
+                              alt={d.name} 
+                              style={{width:48, height:48, objectFit:"contain", borderRadius:10, background:"#f8faf9", border:"1px solid #e2ece8", padding:3, display:"block"}}
+                              onError={e => { e.target.style.display = "none"; }} 
+                            />
+                            <span 
+                              title={d.category}
+                              style={{position:"absolute", bottom:-4, right:-4, width:22, height:22, borderRadius:"50%", background:"#e6f7f2", border:"1.5px solid #fff", display:"flex", alignItems:"center", justifyContent:"center", color:"#08766d", boxShadow:"0 1px 4px rgba(0,0,0,0.12)"}}
+                            >
+                              {d.category === "Crutches" ? <IconCrutches size={12} /> : d.category === "Walker" ? <IconWalker size={12} /> : d.category === "Hearing Aid" ? <IconHearingAid size={12} /> : <IconWheelchair size={12} />}
+                            </span>
+                          </div>
                           <div>
                             <b>{d.name}</b>
                             <small>{d.category} · {d.condition} · qty {d.qty}</small>
@@ -2017,12 +2082,20 @@ export default function App() {
                       style={{cursor:"pointer", display:"flex", flexDirection:"column", transition:"all 0.2s ease"}}
                     >
                       <div style={{display:"flex", alignItems:"center", gap:"14px", marginBottom:"12px"}}>
-                        <img 
-                          src={d.image || (d.category === "Crutches" ? "/images/crutches_forearm.png" : d.category === "Walker" ? "/images/walker_folding.png" : d.category === "Hearing Aid" ? "/images/hearing_aid_digital.jpg" : "/images/wheelchair_manual.png")} 
-                          alt={d.name} 
-                          style={{width:62, height:62, objectFit:"contain", borderRadius:10, background:"#f8faf9", border:"1px solid #e2ece8", padding:4, flexShrink:0}}
-                          onError={e=>{e.target.style.display="none";}} 
-                        />
+                        <div style={{position:"relative", width:62, height:62, flexShrink:0}}>
+                          <img 
+                            src={d.image || (d.category === "Crutches" ? "/images/crutches_forearm.png" : d.category === "Walker" ? "/images/walker_folding.png" : d.category === "Hearing Aid" ? "/images/hearing_aid_digital.jpg" : "/images/wheelchair_manual.png")} 
+                            alt={d.name} 
+                            style={{width:62, height:62, objectFit:"contain", borderRadius:10, background:"#f8faf9", border:"1px solid #e2ece8", padding:4, display:"block"}}
+                            onError={e=>{e.target.style.display="none";}} 
+                          />
+                          <span 
+                            title={d.category}
+                            style={{position:"absolute", bottom:-3, right:-3, width:24, height:24, borderRadius:"50%", background:"#e6f7f2", border:"2px solid #fff", display:"flex", alignItems:"center", justifyContent:"center", color:"#08766d", boxShadow:"0 1px 4px rgba(0,0,0,0.15)"}}
+                          >
+                            {d.category === "Crutches" ? <IconCrutches size={13} /> : d.category === "Walker" ? <IconWalker size={13} /> : d.category === "Hearing Aid" ? <IconHearingAid size={13} /> : <IconWheelchair size={13} />}
+                          </span>
+                        </div>
                         <div style={{flex:1, minWidth:0}}>
                           <div className="line" style={{marginBottom:4}}>
                             <code>{d.id}</code>
@@ -2070,9 +2143,26 @@ export default function App() {
         </>}
 
         {page==="inventory"&&<>{pageHeader(t.inventoryEyebrow,t.inventoryTitle,t.inventorySub)}
-          <div className="notice">ⓘ <b>Device Types Directory:</b> Click any equipment category below to view complete engineering specifications, models, and safety criteria.</div>
+          <div className="notice">ⓘ <b>Device Inventory Directory:</b> Explore all refurbished assistive devices in stock (from donation & purchase inventory), or inspect engineering specifications by category.</div>
 
-          <div className="toolbar">
+          <div className="purchase-tabs" style={{marginBottom:"20px"}}>
+            <button 
+              type="button" 
+              className={`purchase-tab-btn ${inventoryTab === "items" ? "active" : ""}`}
+              onClick={() => setInventoryTab("items")}
+            >
+              📦 Available Inventory Items ({filteredInventoryItems.length})
+            </button>
+            <button 
+              type="button" 
+              className={`purchase-tab-btn ${inventoryTab === "categories" ? "active" : ""}`}
+              onClick={() => setInventoryTab("categories")}
+            >
+              📋 Categories & Technical Specs ({visibleDeviceTypes.length})
+            </button>
+          </div>
+
+          <div className="toolbar" style={{gap:"14px", alignItems:"center"}}>
             <label>{t.filterItemType}
               <select value={deviceTypeFilter} onChange={e=>setDeviceTypeFilter(e.target.value)}>
                 <option>{t.allDeviceTypes}</option>
@@ -2082,66 +2172,146 @@ export default function App() {
                 <option value="Hearing Aids">{t.hearingAids || "Hearing Aids"}</option>
               </select>
             </label>
+            {inventoryTab === "items" && (
+              <div style={{flex:1, minWidth:"220px"}}>
+                <input 
+                  placeholder="⌕ Search inventory items, models, hubs, specs…" 
+                  value={inventorySearch} 
+                  onChange={e=>setInventorySearch(e.target.value)} 
+                />
+              </div>
+            )}
             <div style={{marginLeft:"auto", display:"flex", alignItems:"center", gap:"10px"}}>
-              <span className="badge green">{visibleDeviceTypes.length} supported categories</span>
-              <button className="btn" onClick={()=>go("status")}><IconStatus size={14} style={{marginRight:"6px",verticalAlign:"middle"}} /> View Lifecycle in Item status →</button>
+              <span className="badge green">{inventoryTab === "items" ? `${filteredInventoryItems.length} items in inventory` : `${visibleDeviceTypes.length} supported categories`}</span>
+              <button className="btn" onClick={()=>go("status")}><IconStatus size={14} style={{marginRight:"6px",verticalAlign:"middle"}} /> View in Item status →</button>
             </div>
           </div>
 
-          <div className="device-types-grid">
-            {visibleDeviceTypes.map(type => {
-              const inStock = devices.filter(d => d.category.toLowerCase().includes(type.category.toLowerCase())).reduce((acc, curr) => acc + (Number(curr.qty) || 1), 0);
-              const IconComp = typeof type.icon === "function" ? type.icon : IconWheelchair;
-              return (
-                <div 
-                  className="device-type-card" 
-                  key={type.id}
-                  style={{cursor:"pointer", display:"flex", flexDirection:"column"}}
-                  onClick={()=>setSelectedDeviceType(type)}
-                >
-                  <div className="type-card-header">
-                    <div className="type-header-left">
-                      <div className="device-emoji"><IconComp size={24} /></div>
-                      <div>
-                        <h3>{type.title}</h3>
-                        <span className="badge gold">{type.badge}</span>
-                      </div>
+          {inventoryTab === "items" && (
+            <div className="cards" style={{gridTemplateColumns:"repeat(auto-fill, minmax(320px, 1fr))", gap:"18px"}}>
+              {filteredInventoryItems.map(item => (
+                <article className="purchase-card" key={item.id} style={{display:"flex", flexDirection:"column"}}>
+                  <div className="purchase-card-img-wrap" style={{position:"relative"}}>
+                    <img src={item.image} alt={item.name} className="purchase-card-img" onError={(e)=>{e.target.style.display="none";}} />
+                    <span 
+                      title={item.category}
+                      style={{position:"absolute", top:10, left:10, width:30, height:30, borderRadius:"50%", background:"#ffffff", border:"1.5px solid #e2ece8", display:"flex", alignItems:"center", justifyContent:"center", color:"#08766d", boxShadow:"0 2px 6px rgba(0,0,0,0.12)"}}
+                    >
+                      {item.category === "Crutches" ? <IconCrutches size={16} /> : item.category === "Walker" ? <IconWalker size={16} /> : item.category === "Hearing Aid" ? <IconHearingAid size={16} /> : <IconWheelchair size={16} />}
+                    </span>
+                  </div>
+
+                  <div className="purchase-card-top" style={{marginTop:10}}>
+                    <span className="badge green"><IconShieldCheck size={12} style={{marginRight:4, verticalAlign:"middle"}} />{item.cert}</span>
+                    <span className="badge">{item.condition}</span>
+                  </div>
+
+                  <div className="purchase-donor-tag" style={{margin:"6px 0"}}>
+                    <span>Donation ID: <b>{item.donationId}</b></span>
+                    <span>·</span>
+                    <span>Available: <b>{item.qtyAvailable} unit{item.qtyAvailable === 1 ? "" : "s"}</b></span>
+                  </div>
+
+                  <h3 style={{fontSize:"16px", margin:"4px 0 6px"}}>{item.name}</h3>
+                  <div className="purchase-specs" style={{fontSize:"12px", color:"#4a635d", marginBottom:6}}>{item.specs}</div>
+                  <div className="purchase-donor-note" style={{fontSize:"11.5px", fontStyle:"italic", color:"#607b74", marginBottom:8}}>“{item.donorNote}”</div>
+                  <small style={{color:"#80938e", display:"block", marginBottom:12}}>📍 Dispatch Hub: {item.hub}</small>
+
+                  <div className="purchase-price-box" style={{marginTop:"auto", marginBottom:12}}>
+                    <div className="price-main-row">
+                      <span className="price-amount">{money(item.handlingPrice)}</span>
+                      <span className="price-original">{money(item.originalValue)}</span>
+                      <span className="badge gold">Refurbished</span>
                     </div>
+                    <span className="price-subsidy-note">✓ Or ₹0 {t.freeWithUdid}</span>
                   </div>
 
-                  <div className="type-card-image-wrap" style={{marginBottom:"12px"}}>
-                    <img src={type.image} alt={type.title} className="type-card-img" onError={(e)=>{e.target.style.display="none";}} />
-                  </div>
-
-                  <div className="type-counter-badge">
-                    📦 <b>{inStock}</b> unit{inStock === 1 ? "" : "s"} tracked in system
-                  </div>
-
-                  <p className="type-card-summary" style={{margin:"0 0 16px", flex:1}}>{type.summary}</p>
-
-                  <div className="type-card-actions" onClick={e=>e.stopPropagation()}>
+                  <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
                     <button 
                       type="button" 
                       className="btn primary" 
-                      style={{flex:1, padding:"10px 14px", display:"inline-flex", alignItems:"center", justifyContent:"center", gap:"6px"}}
-                      onClick={()=>setSelectedDeviceType(type)}
+                      style={{padding:"9px 10px", fontSize:"12px", display:"inline-flex", alignItems:"center", justifyContent:"center", gap:5}}
+                      onClick={()=>{ setPurchasingItem(item); go("purchase"); }}
                     >
-                      <IconSearch size={14} /> View Details & Specs →
+                      <IconPurchase size={14} /> Claim / Buy
                     </button>
                     <button 
                       type="button" 
                       className="btn" 
-                      style={{padding:"10px 12px"}}
-                      onClick={()=>setModal("donate")}
-                      title={`Donate ${type.title}`}
+                      style={{padding:"9px 10px", fontSize:"12px", display:"inline-flex", alignItems:"center", justifyContent:"center", gap:5}}
+                      onClick={()=>{
+                        const dev = devices.find(d => d.id === item.donationId) || { id: item.donationId, name: item.name, category: item.category, condition: item.condition, state: "Telangana", district: "Hyderabad", date: "Recent", status: "Quality Certified", qty: item.qtyAvailable, stage: 6, image: item.image };
+                        setSelectedStatusDevice(dev);
+                        go("status");
+                      }}
                     >
-                      <IconDonations size={14} style={{marginRight:"4px"}} /> Donate
+                      <IconStatus size={14} /> View Status
                     </button>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                </article>
+              ))}
+              {!filteredInventoryItems.length && (
+                <p className="panel empty" style={{gridColumn:"1/-1"}}>No inventory items match your search or category filter.</p>
+              )}
+            </div>
+          )}
+
+          {inventoryTab === "categories" && (
+            <div className="device-types-grid">
+              {visibleDeviceTypes.map(type => {
+                const inStock = devices.filter(d => d.category.toLowerCase().includes(type.category.toLowerCase())).reduce((acc, curr) => acc + (Number(curr.qty) || 1), 0);
+                const IconComp = typeof type.icon === "function" ? type.icon : IconWheelchair;
+                return (
+                  <div 
+                    className="device-type-card" 
+                    key={type.id}
+                    style={{cursor:"pointer", display:"flex", flexDirection:"column"}}
+                    onClick={()=>setSelectedDeviceType(type)}
+                  >
+                    <div className="type-card-header">
+                      <div className="type-header-left">
+                        <div className="device-emoji"><IconComp size={24} /></div>
+                        <div>
+                          <h3>{type.title}</h3>
+                          <span className="badge gold">{type.badge}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="type-card-image-wrap" style={{marginBottom:"12px"}}>
+                      <img src={type.image} alt={type.title} className="type-card-img" onError={(e)=>{e.target.style.display="none";}} />
+                    </div>
+
+                    <div className="type-counter-badge">
+                      📦 <b>{inStock}</b> unit{inStock === 1 ? "" : "s"} tracked in system
+                    </div>
+
+                    <p className="type-card-summary" style={{margin:"0 0 16px", flex:1}}>{type.summary}</p>
+
+                    <div className="type-card-actions" onClick={e=>e.stopPropagation()}>
+                      <button 
+                        type="button" 
+                        className="btn primary" 
+                        style={{flex:1, padding:"10px 14px", display:"inline-flex", alignItems:"center", justifyContent:"center", gap:"6px"}}
+                        onClick={()=>setSelectedDeviceType(type)}
+                      >
+                        <IconSearch size={14} /> View Details & Specs →
+                      </button>
+                      <button 
+                        type="button" 
+                        className="btn" 
+                        style={{padding:"10px 12px"}}
+                        onClick={()=>setModal("donate")}
+                        title={`Donate ${type.title}`}
+                      >
+                        <IconDonations size={14} style={{marginRight:"4px"}} /> Donate
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
 
           {selectedDeviceType && (
             <Modal 
@@ -2179,6 +2349,28 @@ export default function App() {
                       <div style={{fontSize:"12px", color:"#546e7a", marginTop:"3px"}}>{v.desc}</div>
                     </div>
                   ))}
+                </div>
+
+                <div className="type-section-title" style={{fontSize:"13px", fontWeight:"700", color:"#0d5f52", margin:"16px 0 10px"}}>
+                  📦 Refurbished Stock Items in this Category ({donatedStoreCatalog.filter(d => d.category.toLowerCase().includes(selectedDeviceType.category.toLowerCase())).length} items)
+                </div>
+                <div style={{display:"grid", gap:"8px", marginBottom:"18px"}}>
+                  {donatedStoreCatalog.filter(d => d.category.toLowerCase().includes(selectedDeviceType.category.toLowerCase())).map(item => (
+                    <div key={item.id} style={{background:"#f0fbf7", padding:"10px 14px", borderRadius:"10px", border:"1px solid #c9eee5", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:"10px"}}>
+                      <div>
+                        <b style={{color:"#08766d"}}>{item.name}</b>
+                        <div style={{fontSize:"11.5px", color:"#546e7a", marginTop:"2px"}}>{item.specs} · Refurbished at: {item.hub}</div>
+                      </div>
+                      <div style={{display:"flex", alignItems:"center", gap:"8px"}}>
+                        <span className="badge green">{item.condition}</span>
+                        <span style={{fontWeight:"700", fontSize:"12.5px", color:"#08766d"}}>{money(item.handlingPrice)}</span>
+                        <button type="button" className="btn primary" style={{padding:"6px 10px", fontSize:"11px"}} onClick={()=>{ setSelectedDeviceType(null); setPurchasingItem(item); go("purchase"); }}>Claim / Buy</button>
+                      </div>
+                    </div>
+                  ))}
+                  {!donatedStoreCatalog.filter(d => d.category.toLowerCase().includes(selectedDeviceType.category.toLowerCase())).length && (
+                    <p style={{fontSize:"12px", color:"#78909c", margin:0}}>No items currently in stock for this category.</p>
+                  )}
                 </div>
 
                 <div className="type-section-title" style={{fontSize:"13px", fontWeight:"700", color:"#0d5f52", margin:"16px 0 10px"}}>
@@ -2754,12 +2946,21 @@ function DeviceTimeline({ device, onUpdateStage }) {
     <div className="device-timeline-wrapper" key={device.id}>
       <div className="timeline-header-card">
         <div className="timeline-device-main">
-          <img 
-            src={device.image || (device.category === "Crutches" ? "/images/crutches_forearm.png" : device.category === "Walker" ? "/images/walker_folding.png" : device.category === "Hearing Aid" ? "/images/hearing_aid_digital.jpg" : "/images/wheelchair_manual.png")} 
-            alt={device.name} 
-            className="device-thumb-img" 
-            onError={(e)=>{e.target.style.display="none";}} 
-          />
+          <div style={{position:"relative", width:68, height:68, flexShrink:0}}>
+            <img 
+              src={device.image || (device.category === "Crutches" ? "/images/crutches_forearm.png" : device.category === "Walker" ? "/images/walker_folding.png" : device.category === "Hearing Aid" ? "/images/hearing_aid_digital.jpg" : "/images/wheelchair_manual.png")} 
+              alt={device.name} 
+              className="device-thumb-img" 
+              style={{width:68, height:68, objectFit:"contain", borderRadius:10, background:"#f8faf9", border:"1px solid #e2ece8", padding:4, display:"block"}}
+              onError={(e)=>{e.target.style.display="none";}} 
+            />
+            <span 
+              title={device.category}
+              style={{position:"absolute", bottom:-3, right:-3, width:24, height:24, borderRadius:"50%", background:"#e6f7f2", border:"2px solid #fff", display:"flex", alignItems:"center", justifyContent:"center", color:"#08766d", boxShadow:"0 1px 4px rgba(0,0,0,0.15)"}}
+            >
+              {device.category === "Crutches" ? <IconCrutches size={13} /> : device.category === "Walker" ? <IconWalker size={13} /> : device.category === "Hearing Aid" ? <IconHearingAid size={13} /> : <IconWheelchair size={13} />}
+            </span>
+          </div>
           <div className="timeline-device-title">
             <div className="line">
               <span className="badge">{device.id}</span>
@@ -2847,18 +3048,12 @@ function DeviceTimeline({ device, onUpdateStage }) {
               </div>
               <div className="timeline-content-bubble">
                 <div className="bubble-top">
-                  <div>
-                    <span className="bubble-step-tag">Stage {stage.step} of 7</span>
-                    <h4 className="bubble-title">{stage.icon} {stage.title}</h4>
-                  </div>
+                  <h4 className="bubble-title">{stage.icon} Step {stage.step}: {stage.title}</h4>
                   <span className={`badge ${isCompleted ? "green" : isCurrent ? "gold" : ""}`}>
                     {isCompleted ? "✓ Completed" : isCurrent ? "▶ Current Stage" : "Upcoming"}
                   </span>
                 </div>
                 <p className="bubble-desc">{stage.desc}</p>
-                <div className="bubble-detail">
-                  <small>ⓘ {stage.detail}</small>
-                </div>
               </div>
             </div>
           );
