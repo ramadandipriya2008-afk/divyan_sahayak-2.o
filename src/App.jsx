@@ -27,7 +27,7 @@ import {
   IconBadgeCheck,
   IconHearingAid
 } from "./components/Icons";
-import { translations, getTranslation } from "./translations";
+import { translations, getTranslation, tr } from "./translations";
 
 const initialDevices = [
   { id:"DS-D-24072", name:"Reciprocal folding walking frame", category:"Walker", condition:"Working", state:"Andhra Pradesh", district:"Vijayawada", date:"29 Oct 2026", status:"Allocated & Delivered", qty:2, stage:7, image:"/images/walker_folding.png" },
@@ -284,71 +284,72 @@ const navItems = [
   ["resale", IconResale, "Resale items"],
   ["profile", IconProfile, "Profile settings"]
 ];
-const STAGES = [
+const getStages = (tr = translations.English) => [
   {
     step: 1,
-    title: "Donation Submitted",
-    short: "Submitted",
-    statusText: "Submission received",
-    desc: "Donor registered device details, condition report, and collection address.",
-    detail: "Item specifications, condition report, and donor contact verified.",
+    title: tr.stage1Title || "Donation Submitted",
+    short: tr.stage1Short || "Submitted",
+    statusText: tr.stage1Status || "Submission received",
+    desc: tr.stage1Desc || "Donor registered device details, condition report, and collection address.",
+    detail: tr.stage1Desc || "Item specifications, condition report, and donor contact verified.",
     icon: "📝"
   },
   {
     step: 2,
-    title: "Collection Scheduled",
-    short: "Collection",
-    statusText: "Collection Scheduled",
-    desc: "Pickup window arranged with local volunteer or logistics coordinator.",
-    detail: "Doorstep collection coordinated with district landmark confirmation.",
+    title: tr.stage2Title || "Collection Scheduled",
+    short: tr.stage2Short || "Collection",
+    statusText: tr.stage2Status || "Collection Scheduled",
+    desc: tr.stage2Desc || "Pickup window arranged with local volunteer or logistics coordinator.",
+    detail: tr.stage2Desc || "Doorstep collection coordinated with district landmark confirmation.",
     icon: "🚚"
   },
   {
     step: 3,
-    title: "Hub Intake & Verification",
-    short: "Hub Intake",
-    statusText: "Received at Hub",
-    desc: "Device received at regional refurbishment center and barcoded.",
-    detail: "Weight, serial number, and initial physical integrity verified.",
+    title: tr.stage3Title || "Hub Intake & Verification",
+    short: tr.stage3Short || "Hub Intake",
+    statusText: tr.stage3Status || "Received at Hub",
+    desc: tr.stage3Desc || "Device received at regional refurbishment center and barcoded.",
+    detail: tr.stage3Desc || "Weight, serial number, and initial physical integrity verified.",
     icon: "📦"
   },
   {
     step: 4,
-    title: "Technical Inspection",
-    short: "Inspection",
-    statusText: "Inspection Pending",
-    desc: "Certified mobility technician performs comprehensive mechanical evaluation.",
-    detail: "Frame stress test, wheel bearings, braking lock, and folding integrity.",
+    title: tr.stage4Title || "Technical Inspection",
+    short: tr.stage4Short || "Inspection",
+    statusText: tr.stage4Status || "Inspection Pending",
+    desc: tr.stage4Desc || "Certified mobility technician performs comprehensive mechanical evaluation.",
+    detail: tr.stage4Desc || "Frame stress test, wheel bearings, braking lock, and folding integrity.",
     icon: "🔍"
   },
   {
     step: 5,
-    title: "Refurbishment & Sanitization",
-    short: "Refurbishment",
-    statusText: "Refurbishment in Progress",
-    desc: "Repairs completed, worn parts renewed, deep hospital-grade sanitization.",
-    detail: "Tire replacement, grip padding renewed, lubrication, and antimicrobial wash.",
+    title: tr.stage5Title || "Refurbishment & Sanitization",
+    short: tr.stage5Short || "Refurbishment",
+    statusText: tr.stage5Status || "Refurbishment in Progress",
+    desc: tr.stage5Desc || "Repairs completed, worn parts renewed, deep hospital-grade sanitization.",
+    detail: tr.stage5Desc || "Tire replacement, grip padding renewed, lubrication, and antimicrobial wash.",
     icon: "🛠️"
   },
   {
     step: 6,
-    title: "Quality Certification",
-    short: "Certification",
-    statusText: "Quality Certified",
-    desc: "Final load-bearing test passed; safety certification tag affixed.",
-    detail: "Dual-technician sign-off certifying device meets mobility safety standards.",
+    title: tr.stage6Title || "Quality Certification",
+    short: tr.stage6Short || "Certification",
+    statusText: tr.stage6Status || "Quality Certified",
+    desc: tr.stage6Desc || "Final load-bearing test passed; safety certification tag affixed.",
+    detail: tr.stage6Desc || "Dual-technician sign-off certifying device meets mobility safety standards.",
     icon: "✅"
   },
   {
     step: 7,
-    title: "Allocated & Delivered",
-    short: "Allocated",
-    statusText: "Allocated to Recipient",
-    desc: "Matched to verified community NGO or direct beneficiary request.",
-    detail: "Handover completed, custom fit verified, and mobility restored.",
+    title: tr.stage7Title || "Allocated & Delivered",
+    short: tr.stage7Short || "Allocated",
+    statusText: tr.stage7Status || "Allocated to Recipient",
+    desc: tr.stage7Desc || "Matched to verified community NGO or direct beneficiary request.",
+    detail: tr.stage7Desc || "Handover completed, custom fit verified, and mobility restored.",
     icon: "🤝"
   }
 ];
+const STAGES = getStages(translations.English);
 
 const DEVICE_TYPES = [
   {
@@ -969,7 +970,17 @@ const sampleUdidHolders = [
   }
 ];
 
+export function isValidUdidNumber(udid) {
+  if (!udid) return false;
+  const clean = String(udid).trim().toUpperCase();
+  const isSample = sampleUdidHolders.some(u => u.udid.toUpperCase() === clean);
+  if (isSample) return true;
+  const regex = /^[A-Z]{2}[0-9A-Z]{12,16}$/;
+  return clean.length >= 14 && clean.length <= 18 && regex.test(clean);
+}
+
 export default function App() {
+  const translate = (text) => tr(text, language);
   const [profile,setProfile] = useState(()=>read("ds-profile",defaultProfile));
   const [isAuthenticated,setIsAuthenticated] = useState(()=>Boolean(read("ds-authenticated",false)));
   const [authMode,setAuthMode] = useState("signup");
@@ -1030,6 +1041,7 @@ export default function App() {
   useEffect(()=>{if(!toast)return;const t=setTimeout(()=>setToast(""),2800);return ()=>clearTimeout(t);},[toast]);
 
   const t = useMemo(() => translations[language] || translations.English, [language]);
+  const stages = useMemo(() => getStages(t), [t]);
   const currentNavItems = useMemo(() => getNavItems(t, profile), [t, profile]);
 
   const handleLanguageChange = (newLang) => {
@@ -1091,9 +1103,17 @@ export default function App() {
     e.preventDefault();
     if(!purchasingItem) return;
     const f = new FormData(e.currentTarget);
+    const rawUdid = String(f.get("udid") || profile?.udid || "").trim().toUpperCase();
+
+    // STRICT UDID VERIFICATION: Only a person with verified UDID can buy/claim donated item
+    if (!rawUdid || !isValidUdidNumber(rawUdid)) {
+      setToast(t.orderRequiresUdidError || "Order blocked: A verified UDID number is strictly required to claim donated assistive items.");
+      return;
+    }
+
     const orderId = "ORD-" + Math.floor(10000 + Math.random() * 89999);
     const paymentMethod = String(f.get("paymentMethod") || "");
-    const isFree = paymentMethod.includes("UDID");
+    const isFree = paymentMethod.includes("UDID") || paymentMethod.includes("Free") || paymentMethod.includes("100%");
     const trackingId = "TRACK-HYD-" + Math.floor(10000 + Math.random() * 89999);
     const price = isFree ? 0 : (purchasingItem.handlingPrice || 0);
 
@@ -1104,30 +1124,42 @@ export default function App() {
       category: purchasingItem.category,
       price,
       paymentMethod,
+      udid: rawUdid,
+      isUdidVerified: true,
       date: new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
       status: "Dispatched from Hub",
       eta: "Within 2-3 working days",
       trackingId,
-      recipient: f.get("name"),
-      address: `${f.get("address")}, ${f.get("district")}, ${f.get("state")} - ${f.get("pin")}`
+      recipient: f.get("name") || profile?.name || "Verified Beneficiary",
+      address: `${f.get("address") || ""}, ${f.get("district") || ""}, ${f.get("state") || ""} - ${f.get("pin") || ""}`
     };
+
+    if (!profile?.udid) {
+      setProfile(prev => ({
+        ...(prev || defaultProfile),
+        udid: rawUdid,
+        name: f.get("name") || prev?.name || "Verified Beneficiary",
+        isUdidVerified: true,
+        type: "Divyangjan Beneficiary"
+      }));
+    }
 
     setPurchases(prev => [newOrder, ...prev]);
     setNotices(prev => [{
       title: `Order confirmed: ${orderId}`,
-      body: `Your request for "${purchasingItem.name}" has been placed. Tracking ID: ${trackingId}.`,
+      body: `Verified UDID ${rawUdid}. Your request for "${purchasingItem.name}" has been placed. Tracking ID: ${trackingId}.`,
       time: "Just now",
       unread: true
     }, ...prev]);
 
     setPurchasingItem(null);
     setPurchaseTab("orders");
-    setToast(`Order ${orderId} confirmed! Check 'My Orders' tab.`);
+    setToast(`Order ${orderId} confirmed for verified UDID ${rawUdid}!`);
   }
 
   function updateDeviceStage(deviceId, newStage) {
     if (newStage < 1 || newStage > 7) return;
-    const stageObj = STAGES.find(s => s.step === newStage);
+    const stageObj = stages.find(s => s.step === newStage) || STAGES.find(s => s.step === newStage);
     setDevices(prev => prev.map(d => {
       if (d.id !== deviceId) return d;
       return {
@@ -1136,7 +1168,7 @@ export default function App() {
         status: stageObj ? stageObj.statusText : d.status
       };
     }));
-    setToast(`Stage updated to Step ${newStage}: ${stageObj?.title}`);
+    setToast(`${t.stage || "Stage"} ${newStage}: ${stageObj?.title}`);
   }
 
   function submitSignup(e){
@@ -1475,7 +1507,7 @@ export default function App() {
             >
               <IconIdCard size={15} />
               <span>{t.udidPortal || "Divyangjan UDID Portal"}</span>
-              <span className="udid-pill-badge">Govt Card</span>
+              <span className="udid-pill-badge">{t.govtCard || "Govt Card"}</span>
             </button>
           </div>
 
@@ -1484,9 +1516,10 @@ export default function App() {
               <option value="English">English</option>
               <option value="తెలుగు">తెలుగు</option>
               <option value="हिन्दी">हिन्दी</option>
+              <option value="ಕನ್ನಡ">ಕನ್ನಡ</option>
             </select>
             <button type="button" className="btn outline" onClick={enterAsGuest}>
-              Explore as Guest →
+              {t.guestExplore || "Explore as Guest →"}
             </button>
           </div>
         </header>
@@ -1499,20 +1532,20 @@ export default function App() {
                 <div className="standalone-auth-hero udid-hero-theme">
                   <div className="standalone-auth-hero-content">
                     <div className="udid-hero-badge">
-                      <IconIdCard size={15} /> <span>Swavlamban UDID Beneficiary Portal</span>
+                      <IconIdCard size={15} /> <span>{t.swavlambanTitle || "Swavlamban UDID Beneficiary Portal"}</span>
                     </div>
                     <h2>{t.udidHeroTitle || "100% Free refurbished mobility devices with your UDID Card."}</h2>
-                    <p>{t.udidHeroSub || "Dedicated government UDID-verified portal for Divyangjan across Telangana & Andhra Pradesh."}</p>
+                    <p>{t.udidHeroSub || "Dedicated government UDID-verified portal for Divyangjan across Karnataka, Telangana & Andhra Pradesh."}</p>
 
                     {/* Interactive Digital UDID Card Preview */}
                     <div className="udid-digital-card">
                       <div className="udid-card-top-row">
                         <span className="govt-tag">
                           <IconBadgeCheck size={13} color="#2fe0cc" />
-                          <span>Govt of India · UDID Card</span>
+                          <span>{translate("Govt of India · UDID Card")}</span>
                         </span>
                         <span className="udid-status-badge">
-                          ✓ Verified Eligible
+                          ✓ {t.verifiedEligible || "Verified Eligible"}
                         </span>
                       </div>
                       <div className="udid-card-main-content">
@@ -1526,23 +1559,23 @@ export default function App() {
                         </div>
                       </div>
                       <div className="udid-card-footer">
-                        <span>ENTITLEMENT: 100% FREE ASSISTIVE DEVICES</span>
-                        <span>SWAVLAMBAN CARD</span>
+                        <span>{t.entitlementNotice || "ENTITLEMENT: 100% FREE ASSISTIVE DEVICES"}</span>
+                        <span>{t.swavlambanCard || "SWAVLAMBAN CARD"}</span>
                       </div>
                     </div>
 
                     <div className="auth-hero-features" style={{marginTop:"18px"}}>
                       <div className="hero-feature-item">
                         <span className="feature-check"><IconCheck size={14} /></span>
-                        <span>Free for ≥40% Disability</span>
+                        <span>{t.freeForDisability || "Free for ≥40% Disability"}</span>
                       </div>
                       <div className="hero-feature-item">
                         <span className="feature-check"><IconShieldCheck size={14} /></span>
-                        <span>7-Stage Certified Inspection</span>
+                        <span>{translate(t.certifiedInspection || "7-Stage Certified Inspection")}</span>
                       </div>
                       <div className="hero-feature-item">
                         <span className="feature-check"><IconTruck size={14} /></span>
-                        <span>Free Doorstep Delivery</span>
+                        <span>{t.freeDoorstepDelivery || "Free Doorstep Delivery"}</span>
                       </div>
                     </div>
                   </div>
@@ -1623,41 +1656,41 @@ export default function App() {
 
                       <div className="form-row-between">
                         <label className="check" style={{margin:0}}>
-                          <input type="checkbox" defaultChecked /> Remember my UDID on this browser
+                          <input type="checkbox" defaultChecked /> {t.rememberMe || "Remember my UDID on this browser"}
                         </label>
-                        <a className="forgot-link" onClick={() => setToast("Enter your 18-digit Swavlamban UDID card number or select an account.")}>
-                          UDID help?
+                        <a className="forgot-link" onClick={() => setToast(t.udidHelp || "UDID help?")}>
+                          {t.udidHelp || "UDID help?"}
                         </a>
                       </div>
 
                       <button type="submit" className="btn primary full" style={{marginTop:"14px", padding:"12px"}}>
-                        Verify UDID & Sign In to Beneficiary Portal →
+                        {t.verifyUdidSignInBtn || "Verify UDID & Sign In to Beneficiary Portal →"}
                       </button>
 
                       <div className="auth-switch-prompt">
-                        Don't have a UDID profile registered yet?{" "}
+                        {t.dontHaveUdidProfile || "Don't have a UDID profile registered yet?"}{" "}
                         <button type="button" className="link-button" onClick={() => setAuthMode("signup")}>
-                          Register your UDID card here
+                          {t.registerUdidHere || "Register your UDID card here"}
                         </button>
                       </div>
 
                       <div className="portal-switch-link-card" onClick={() => switchPortal("general")}>
                         <div className="switch-text">
-                          <p>Are you a Donor, NGO or Volunteer? <b>General Portal</b></p>
+                          <p>{t.switchToGeneralPrompt || "Are you a Donor, NGO or Volunteer? Switch to General Portal →"}</p>
                         </div>
-                        <span className="switch-btn">Switch Portal →</span>
+                        <span className="switch-btn">→</span>
                       </div>
                     </form>
                   ) : (
                     <form className="auth-form" onSubmit={submitUdidSignup}>
                       <div className="auth-form-head">
-                        <h3>Register with UDID</h3>
-                        <p className="sub">Fast registration. Fill in your UDID number, full name, and password. You can complete all remaining disability, contact, and delivery details in Upgrade Profile after login.</p>
+                        <h3>{t.udidSignUp || "Register with UDID"}</h3>
+                        <p className="sub">{t.fastRegistration || "Fast registration. Fill in your UDID number, full name, and password. You can complete all remaining disability, contact, and delivery details in Upgrade Profile after login."}</p>
                       </div>
 
                       <div className="form-grid">
                         <Field 
-                          label="UDID Card Number (18 Digits) *" 
+                          label={t.udidNumberLabel || "UDID Card Number (18 Digits) *"} 
                           name="udidNumber" 
                           required 
                           placeholder="e.g. TG0120119950012345" 
@@ -1668,7 +1701,7 @@ export default function App() {
                           }}
                         />
                         <Field 
-                          label="Name of User (as per UDID Card) *" 
+                          label={t.nameOfUser || "Name of User (as per UDID Card) *"} 
                           name="name" 
                           required 
                           placeholder="Full Name as per UDID Card" 
@@ -1678,7 +1711,7 @@ export default function App() {
                           }}
                         />
                         <Field 
-                          label="Password *" 
+                          label={t.passwordLabel || "Password *"} 
                           name="password" 
                           required 
                           type="password" 
@@ -1686,7 +1719,7 @@ export default function App() {
                           placeholder="Create password (min 6 characters)" 
                         />
                         <Field 
-                          label="Confirm Password *" 
+                          label={t.confirmPassword || "Confirm Password *"} 
                           name="confirmPassword" 
                           required 
                           type="password" 
@@ -1696,21 +1729,21 @@ export default function App() {
                       </div>
 
                       <button type="submit" className="btn primary full" style={{padding:"12px", fontSize:"14px", fontWeight:"600", marginTop:"12px"}}>
-                        Register UDID Account →
+                        {t.registerUdidAccount || "Register UDID Account →"}
                       </button>
 
                       <div className="auth-switch-prompt">
-                        Already have your UDID registered?{" "}
+                        {t.alreadyRegisteredUdid || "Already have your UDID registered?"}{" "}
                         <button type="button" className="link-button" onClick={() => setAuthMode("login")}>
-                          Sign in with UDID
+                          {t.signInWithUdid || "Sign in with UDID"}
                         </button>
                       </div>
 
                       <div className="portal-switch-link-card" onClick={() => switchPortal("general")}>
                         <div className="switch-text">
-                          <p>Are you a Donor, NGO or Volunteer? <b>General Portal</b></p>
+                          <p>{t.switchToGeneralPrompt || "Are you a Donor, NGO or Volunteer? General Portal"}</p>
                         </div>
-                        <span className="switch-btn">Switch Portal →</span>
+                        <span className="switch-btn">→</span>
                       </div>
                     </form>
                   )}
@@ -1728,22 +1761,22 @@ export default function App() {
                   <div className="standalone-auth-hero-overlay"></div>
                   <div className="standalone-auth-hero-content">
                     <div className="auth-hero-badge">
-                      <IconWheelchair size={15} /> <span>Restoring Mobility & Dignity</span>
+                      <IconWheelchair size={15} /> <span>{t.restoringMobilityDignity || "Restoring Mobility & Dignity"}</span>
                     </div>
-                    <h2>Every device restored brings a smile back home.</h2>
-                    <p>A transparent, community-led platform connecting donors, mobility equipment, and beneficiaries across Telangana and Andhra Pradesh.</p>
+                    <h2>{t.heroLadyTitle || "Every device restored brings a smile back home."}</h2>
+                    <p>{t.heroLadySub || "A transparent, community-led platform connecting donors, mobility equipment, and beneficiaries across Telangana and Andhra Pradesh."}</p>
                     <div className="auth-hero-features">
                       <div className="hero-feature-item">
                         <span className="feature-check"><IconShieldCheck size={14} /></span>
-                        <span>7-Stage Certified Inspection</span>
+                        <span>{t.certifiedInspection || "7-Stage Certified Inspection"}</span>
                       </div>
                       <div className="hero-feature-item">
                         <span className="feature-check"><IconCheck size={14} /></span>
-                        <span>100% Free with UDID Card</span>
+                        <span>{translate(t.freeWithUdid || "100% Free with UDID Card")}</span>
                       </div>
                       <div className="hero-feature-item">
                         <span className="feature-check"><IconTruck size={14} /></span>
-                        <span>Doorstep Pickup & Hubs</span>
+                        <span>{t.freeDoorstepDelivery || "Doorstep Pickup & Hubs"}</span>
                       </div>
                     </div>
                   </div>
@@ -1756,101 +1789,99 @@ export default function App() {
                       className={`auth-tab-btn ${authMode === "signup" ? "active" : ""}`}
                       onClick={() => setAuthMode("signup")}
                     >
-                      Create Account / Sign Up
+                      {t.signUpTitle || "Create Account / Sign Up"}
                     </button>
                     <button 
                       type="button" 
                       className={`auth-tab-btn ${authMode === "login" ? "active" : ""}`}
                       onClick={() => setAuthMode("login")}
                     >
-                      Sign In / Log In
+                      {t.signInTitle || "Sign In / Log In"}
                     </button>
                   </div>
 
                   {authMode === "login" ? (
                     <form className="auth-form" onSubmit={submitLogin}>
                       <div className="auth-form-head">
-                        <h3>Welcome to Divyang-Sahayak</h3>
-                        <p className="sub">Sign in to manage your donations, track items, or request mobility devices.</p>
+                        <h3>{t.welcomeToPlatform || "Welcome to Divyang-Sahayak"}</h3>
+                        <p className="sub">{t.welcomeSubtitle || "Sign in to manage your donations, track items, or request mobility devices."}</p>
                       </div>
 
                       <div className="quick-login-banner">
-                        <span>Quick evaluator access:</span>
+                        <span>{t.quickEvaluatorAccess || "Quick evaluator access:"}</span>
                         <button type="button" className="quick-login-btn" onClick={() => quickLogin("Donor")}>
-                          <IconZap size={14} /> Instant Quick Login
+                          <IconZap size={14} /> {t.instantQuickLogin || "Instant Quick Login"}
                         </button>
                       </div>
 
-                      <Field label="Email or Mobile Number *" name="loginId" required placeholder="you@example.com or +91 98490 00000" defaultValue="suresh.kumar@example.org" />
-                      <Field label="Password *" name="password" required type="password" placeholder="Enter password" defaultValue="password123" />
+                      <Field label={t.emailOrMobile || "Email or Mobile Number *"} name="loginId" required placeholder="you@example.com or +91 98490 00000" defaultValue="suresh.kumar@example.org" />
+                      <Field label={t.passwordLabel || "Password *"} name="password" required type="password" placeholder="Enter password" defaultValue="password123" />
 
                       <div className="form-row-between">
                         <label className="check" style={{margin:0}}>
-                          <input type="checkbox" defaultChecked /> Remember me
+                          <input type="checkbox" defaultChecked /> {t.rememberMe || "Remember me"}
                         </label>
-                        <a className="forgot-link" onClick={() => setToast("Please enter your registered password or use Quick Login.")}>Need help?</a>
+                        <a className="forgot-link" onClick={() => setToast("Please enter your registered password or use Quick Login.")}>{t.needHelp || "Need help?"}</a>
                       </div>
 
                       <button type="submit" className="btn primary full" style={{marginTop:"14px", padding:"12px"}}>
-                        Log In to Dashboard →
+                        {t.loginToDashboard || "Log In to Dashboard →"}
                       </button>
 
                       <div className="auth-switch-prompt">
-                        Don't have an account yet?{" "}
+                        {t.dontHaveAccount || "Don't have an account yet?"}{" "}
                         <button type="button" className="link-button" onClick={() => setAuthMode("signup")}>
-                          Sign up here
+                          {t.signUpHere || "Sign up here"}
                         </button>
                       </div>
 
                       <div className="portal-switch-link-card" onClick={() => switchPortal("udid")}>
                         <div className="switch-text">
-                          <p>♿ Are you a Person with Disability? <b>UDID Portal</b></p>
-                          <small style={{color:"#829690"}}>Sign in or register with your government UDID card for 100% free aids.</small>
+                          <p>{t.switchToUdidPrompt || "♿ Are you a Person with Disability? UDID Portal"}</p>
                         </div>
-                        <span className="switch-btn">Open UDID Portal →</span>
+                        <span className="switch-btn">→</span>
                       </div>
                     </form>
                   ) : (
                     <form className="auth-form" onSubmit={submitSignup}>
                       <div className="auth-form-head">
-                        <h3>Create your account</h3>
-                        <p className="sub">Register to donate, request, and track assistive mobility equipment.</p>
+                        <h3>{t.createAccount || "Create your account"}</h3>
+                        <p className="sub">{t.createAccountSub || "Register to donate, request, and track assistive mobility equipment."}</p>
                       </div>
 
                       <div className="form-grid">
-                        <Field label="Full Name *" name="name" required placeholder="e.g. Suresh Kumar" defaultValue="Suresh Kumar" />
-                        <Field label="Email Address *" name="email" required type="email" placeholder="you@example.com" defaultValue="suresh.kumar@example.org" />
-                        <Field label="Phone Number *" name="mobile" required placeholder="+91 98000 00000" defaultValue="+91 98490 54321" />
-                        <Field label="Password *" name="password" required type="password" minLength="6" placeholder="At least 6 characters" defaultValue="password123" />
-                        <Field label="Confirm Password *" name="confirmPassword" required type="password" minLength="6" placeholder="Re-enter password to confirm" defaultValue="password123" />
+                        <Field label={`${t.fullName || "Full Name"} *`} name="name" required placeholder="e.g. Suresh Kumar" defaultValue="Suresh Kumar" />
+                        <Field label={`${t.email || "Email Address"} *`} name="email" required type="email" placeholder="you@example.com" defaultValue="suresh.kumar@example.org" />
+                        <Field label={`${t.mobile || "Phone Number"} *`} name="mobile" required placeholder="+91 98000 00000" defaultValue="+91 98490 54321" />
+                        <Field label={t.passwordLabel || "Password *"} name="password" required type="password" minLength="6" placeholder="At least 6 characters" defaultValue="password123" />
+                        <Field label={t.confirmPassword || "Confirm Password *"} name="confirmPassword" required type="password" minLength="6" placeholder="Re-enter password to confirm" defaultValue="password123" />
                       </div>
 
                       <div className="form-info-tip" style={{margin:"12px 0 16px", padding:"10px 14px", background:"#f0fdf4", border:"1px solid #bbf7d0", borderRadius:"8px", fontSize:"12px", color:"#166534", display:"flex", alignItems:"center", gap:"8px"}}>
                         <IconCheck size={16} color="#16a34a" />
-                        <span>Address, state & account type can be updated in <b>Profile Settings</b> after sign-in.</span>
+                        <span>Address, state & account type can be updated in <b>{t.navProfile}</b> after sign-in.</span>
                       </div>
 
                       <label className="check">
-                        <input type="checkbox" required defaultChecked /> I agree to the platform Terms of Service & Privacy Policy.
+                        <input type="checkbox" required defaultChecked /> {t.agreeTerms || "I agree to the platform Terms of Service & Privacy Policy."}
                       </label>
 
                       <button type="submit" className="btn primary full" style={{marginTop:"6px", padding:"12px", fontSize:"14px", fontWeight:"600"}}>
-                        Create Account & Enter Dashboard →
+                        {t.createAccountBtn || "Create Account & Enter Dashboard →"}
                       </button>
 
                       <div className="auth-switch-prompt">
-                        Already have an account?{" "}
+                        {t.alreadyHaveAccount || "Already have an account?"}{" "}
                         <button type="button" className="link-button" onClick={() => setAuthMode("login")}>
-                          Log in here
+                          {t.logInHere || "Log in here"}
                         </button>
                       </div>
 
                       <div className="portal-switch-link-card" onClick={() => switchPortal("udid")}>
                         <div className="switch-text">
-                          <p>♿ Are you a Person with Disability? <b>UDID Portal</b></p>
-                          <small style={{color:"#829690"}}>Sign in or register with your government UDID card for 100% free aids.</small>
+                          <p>{t.switchToUdidPrompt || "♿ Are you a Person with Disability? UDID Portal"}</p>
                         </div>
-                        <span className="switch-btn">Open UDID Portal →</span>
+                        <span className="switch-btn">→</span>
                       </div>
                     </form>
                   )}
@@ -1918,7 +1949,7 @@ export default function App() {
           <>
             <div className="user-mini-info">
               <b>{profile?.name || defaultProfile.name}</b>
-              <small>{profile?.udid ? `♿ ${profile.udid.slice(0, 8)}… · ${profile?.disabilityPercent || 75}%` : `${profile?.type || "Donor"} · ${t.activeStatus}`}</small>
+              <small>{profile?.udid ? `♿ ${profile.udid.slice(0, 8)}… · ${profile?.disabilityPercent || 75}%` : `${translate(profile?.type || "Donor")} · ${t.activeStatus}`}</small>
             </div>
             <span className="user-mini-arrow">
               <IconChevronRight size={12} />
@@ -1955,10 +1986,10 @@ export default function App() {
             type="button" 
             className="btn profile-topbar-btn" 
             onClick={() => { setProfileTab("profile"); go("profile"); }}
-            title="Profile Settings"
+            title={t.navProfile}
           >
             <IconProfile size={14} style={{verticalAlign:"middle", marginRight:5}} />
-            Profile Settings
+            {t.navProfile}
             {profile?.udid && !profile?.isProfileUpgraded && (
               <span style={{marginLeft:6, display:"inline-block", width:8, height:8, borderRadius:"50%", background:"#f59e0b"}} title="Pending profile upgrade" />
             )}
@@ -1970,6 +2001,7 @@ export default function App() {
             <option value="English">English</option>
             <option value="తెలుగు">తెలుగు</option>
             <option value="हिन्दी">हिन्दी</option>
+            <option value="ಕನ್ನಡ">ಕನ್ನಡ</option>
           </select>
           <button type="button" className="btn logout-topbar-btn" onClick={handleLogout} title={t.logout}>
             <IconLogout size={15} /> {t.logout}
@@ -1984,17 +2016,17 @@ export default function App() {
                 <IconIdCard size={22} color="#08766d" />
               </div>
               <div>
-                <h4>Upgrade Profile Option Available ({profile.udid})</h4>
-                <p>You registered with your UDID No. & Name. Complete your remaining disability category and doorstep delivery address in Profile Settings to claim 100% free mobility equipment.</p>
+                <h4>{t.upgradeBannerTitle} ({profile.udid})</h4>
+                <p>{t.upgradeBannerDesc}</p>
               </div>
             </div>
             <button type="button" className="btn primary" onClick={() => { setProfileTab("upgrade"); go("profile"); }}>
-              <IconBadgeCheck size={14} style={{verticalAlign:"middle", marginRight:4}} /> Go to Upgrade Profile →
+              <IconBadgeCheck size={14} style={{verticalAlign:"middle", marginRight:4}} /> {t.goToUpgradeProfile}
             </button>
           </div>
         )}
 
-        {page==="donations"&&<>{pageHeader(t.donationsEyebrow,t.donationsTitle,t.donationsSub,<button className="btn primary" onClick={()=>setModal("donate")}><IconDonations size={15} style={{marginRight:"6px",verticalAlign:"middle"}} /> {t.donateDeviceBtn}</button>)}<div className="panel"><div className="table-scroll"><table><thead><tr><th>DEVICE</th><th>DONATION ID</th><th>SUBMITTED</th><th>LOCATION</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody>{visibleDonations.map(d=>(
+        {page==="donations"&&<>{pageHeader(t.donationsEyebrow,t.donationsTitle,t.donationsSub,<button className="btn primary" onClick={()=>setModal("donate")}><IconDonations size={15} style={{marginRight:"6px",verticalAlign:"middle"}} /> {t.donateDeviceBtn}</button>)}<div className="panel"><div className="table-scroll"><table><thead><tr><th>{t.thDevice}</th><th>{t.thDonationId}</th><th>{t.thSubmitted}</th><th>{t.thLocation}</th><th>{t.thStatus}</th><th>{t.thActions}</th></tr></thead><tbody>{visibleDonations.map(d=>(
                     <tr key={d.id}>
                       <td>
                         <div style={{display:"flex", alignItems:"center", gap:"12px"}}>
@@ -2013,15 +2045,15 @@ export default function App() {
                             </span>
                           </div>
                           <div>
-                            <b>{d.name}</b>
-                            <small>{d.category} · {d.condition} · qty {d.qty}</small>
+                            <b>{translate(d.name)}</b>
+                            <small>{translate(d.category)} · {translate(d.condition)} · {translate("qty")} {d.qty}</small>
                           </div>
                         </div>
                       </td>
                       <td><code>{d.id}</code></td>
                       <td>{d.date}</td>
-                      <td>{d.district}, {d.state}</td>
-                      <td>{badge(d.status, d.stage>=6?"green":d.stage>=4?"gold":"")}</td>
+                      <td>{translate(d.district)}, {translate(d.state)}</td>
+                      <td>{badge(translate(d.status), d.stage>=6?"green":d.stage>=4?"gold":"")}</td>
                       <td>
                         <div className="actions" style={{margin:0,gap:"6px"}}>
                           <button type="button" className="btn" style={{padding:"6px 10px",fontSize:"11px",display:"inline-flex",alignItems:"center",gap:"5px"}} onClick={()=>setEditingDevice(d)} title="Edit donation"><IconEdit size={12} /> {t.edit}</button>
@@ -2029,7 +2061,7 @@ export default function App() {
                         </div>
                       </td>
                     </tr>
-                  ))}</tbody></table>{!visibleDonations.length&&<p className="empty">No donations match your search.</p>}</div></div></>}
+                  ))}</tbody></table>{!visibleDonations.length&&<p className="empty">{t.noDonationsMatch}</p>}</div></div></>}
 
         {page==="status"&&<>{pageHeader(t.statusEyebrow,t.statusTitle,t.statusSub)}
           {selectedStatusDevice ? (
@@ -2041,39 +2073,41 @@ export default function App() {
                   onClick={()=>setSelectedStatusDevice(null)}
                   style={{display:"inline-flex", alignItems:"center", gap:"6px", fontWeight:"700"}}
                 >
-                  <IconChevronLeft size={16} /> Back to All Tracked Items
+                  <IconChevronLeft size={16} /> {t.backToAllTracked}
                 </button>
                 <div style={{display:"flex", alignItems:"center", gap:"8px"}}>
-                  <span className="badge green">Viewing Item: <b>{selectedStatusDevice.id}</b></span>
-                  <span className="badge gold">{selectedStatusDevice.category}</span>
+                  <span className="badge green">{t.viewingItem} <b>{selectedStatusDevice.id}</b></span>
+                  <span className="badge gold">{translate(selectedStatusDevice.category)}</span>
                 </div>
               </div>
               <DeviceTimeline 
                 key={selectedStatusDevice.id} 
                 device={devices.find(d => d.id === selectedStatusDevice.id) || selectedStatusDevice} 
-                onUpdateStage={updateDeviceStage} 
+                onUpdateStage={updateDeviceStage}
+                stages={stages}
+                t={t}
               />
             </div>
           ) : (
             <>
-              <div className="notice">ⓘ <b>Item Status & Lifecycle Tracking:</b> Click on any equipment item below to view and update its 7-stage refurbishment lifecycle timeline.</div>
+              <div className="notice">ⓘ <b>{t.navStatus}:</b> {t.statusNotice}</div>
               <div className="toolbar">
                 <label>{t.filterStatus}
                   <select value={statusFilter} onChange={e=>setStatusFilter(e.target.value)}>
                     <option>{t.allStatuses}</option>
-                    {[...new Set(devices.map(d=>d.status))].map(s=><option key={s}>{s}</option>)}
+                    {[...new Set(devices.map(d=>d.status))].map(s=><option key={s} value={s}>{translate(s)}</option>)}
                   </select>
                 </label>
                 <div style={{marginLeft:"auto", display:"flex", alignItems:"center", gap:"8px"}}>
-                  <span className="badge green">{devices.filter(d=>statusFilter==="All statuses"||statusFilter===t.allStatuses||d.status===statusFilter).length} items tracked</span>
-                  <small style={{color:"#667772"}}>Click any item card to open 7-stage timeline</small>
+                  <span className="badge green">{devices.filter(d=>statusFilter==="All statuses"||statusFilter===t.allStatuses||d.status===statusFilter).length} {t.itemsTracked}</span>
+                  <small style={{color:"#667772"}}>{t.clickItemForTimeline}</small>
                 </div>
               </div>
 
               <div className="cards" style={{gridTemplateColumns:"repeat(auto-fill, minmax(320px, 1fr))", gap:"18px"}}>
                 {devices.filter(d=>statusFilter==="All statuses"||statusFilter===t.allStatuses||d.status===statusFilter).map(d => {
                   const currentStage = Number(d.stage) || 1;
-                  const currentStageObj = STAGES.find(s => s.step === currentStage) || STAGES[0];
+                  const currentStageObj = stages.find(s => s.step === currentStage) || stages[0];
                   return (
                     <article 
                       className="listing" 
@@ -2099,16 +2133,16 @@ export default function App() {
                         <div style={{flex:1, minWidth:0}}>
                           <div className="line" style={{marginBottom:4}}>
                             <code>{d.id}</code>
-                            {badge(d.status, currentStage>=6?"green":currentStage>=4?"gold":"")}
+                            {badge(translate(d.status), currentStage>=6?"green":currentStage>=4?"gold":"")}
                           </div>
-                          <h3 style={{fontSize:"16px", margin:0, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>{d.name}</h3>
-                          <small style={{color:"#71817e"}}>{d.category} · {d.condition} · qty {d.qty}</small>
+                          <h3 style={{fontSize:"16px", margin:0, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>{translate(d.name)}</h3>
+                          <small style={{color:"#71817e"}}>{translate(d.category)} · {translate(d.condition)} · {translate("qty")} {d.qty}</small>
                         </div>
                       </div>
 
                       <div style={{background:"#f8faf9", padding:"10px 12px", borderRadius:"10px", margin:"8px 0 14px", border:"1px solid #edf2ef"}}>
                         <div style={{display:"flex", justifyContent:"space-between", fontSize:"11px", fontWeight:"700", color:"#08766d", marginBottom:"6px"}}>
-                          <span>Stage {currentStage} of 7</span>
+                          <span>{t.stage} {currentStage} / 7</span>
                           <span>{currentStageObj.title}</span>
                         </div>
                         <div className="progress" style={{margin:0, height:6}}>
@@ -2117,7 +2151,7 @@ export default function App() {
                       </div>
 
                       <div style={{fontSize:"11.5px", color:"#71817e", display:"flex", justifyContent:"space-between", marginBottom:"14px"}}>
-                        <span>📍 {d.district}, {d.state}</span>
+                        <span>📍 {translate(d.district)}, {translate(d.state)}</span>
                         <span>📅 {d.date}</span>
                       </div>
 
@@ -2128,7 +2162,7 @@ export default function App() {
                           style={{display:"inline-flex", alignItems:"center", justifyContent:"center", gap:"6px", padding:"9px 12px"}}
                           onClick={(e)=>{e.stopPropagation(); setSelectedStatusDevice(d);}}
                         >
-                          <IconStatus size={14} /> View 7-Stage Timeline →
+                          <IconStatus size={14} /> {t.viewTimelineBtn}
                         </button>
                       </div>
                     </article>
@@ -2136,31 +2170,14 @@ export default function App() {
                 })}
               </div>
               {!devices.filter(d=>statusFilter==="All statuses"||statusFilter===t.allStatuses||d.status===statusFilter).length && (
-                <p className="panel empty">No items match your status filter.</p>
+                <p className="panel empty">{t.noItemsStatusMatch}</p>
               )}
             </>
           )}
         </>}
 
         {page==="inventory"&&<>{pageHeader(t.inventoryEyebrow,t.inventoryTitle,t.inventorySub)}
-          <div className="notice">ⓘ <b>Device Inventory Directory:</b> Explore all refurbished assistive devices in stock (from donation & purchase inventory), or inspect engineering specifications by category.</div>
-
-          <div className="purchase-tabs" style={{marginBottom:"20px"}}>
-            <button 
-              type="button" 
-              className={`purchase-tab-btn ${inventoryTab === "items" ? "active" : ""}`}
-              onClick={() => setInventoryTab("items")}
-            >
-              📦 Available Inventory Items ({filteredInventoryItems.length})
-            </button>
-            <button 
-              type="button" 
-              className={`purchase-tab-btn ${inventoryTab === "categories" ? "active" : ""}`}
-              onClick={() => setInventoryTab("categories")}
-            >
-              📋 Categories & Technical Specs ({visibleDeviceTypes.length})
-            </button>
-          </div>
+          <div className="notice">ⓘ <b>{t.navInventory}:</b> {t.inventoryNotice}</div>
 
           <div className="toolbar" style={{gap:"14px", alignItems:"center"}}>
             <label>{t.filterItemType}
@@ -2172,258 +2189,109 @@ export default function App() {
                 <option value="Hearing Aids">{t.hearingAids || "Hearing Aids"}</option>
               </select>
             </label>
-            {inventoryTab === "items" && (
-              <div style={{flex:1, minWidth:"220px"}}>
-                <input 
-                  placeholder="⌕ Search inventory items, models, hubs, specs…" 
-                  value={inventorySearch} 
-                  onChange={e=>setInventorySearch(e.target.value)} 
-                />
-              </div>
-            )}
+            <div style={{flex:1, minWidth:"220px"}}>
+              <input 
+                placeholder={`⌕ ${t.searchInventoryPlaceholder}`} 
+                value={inventorySearch} 
+                onChange={e=>setInventorySearch(e.target.value)} 
+              />
+            </div>
             <div style={{marginLeft:"auto", display:"flex", alignItems:"center", gap:"10px"}}>
-              <span className="badge green">{inventoryTab === "items" ? `${filteredInventoryItems.length} items in inventory` : `${visibleDeviceTypes.length} supported categories`}</span>
-              <button className="btn" onClick={()=>go("status")}><IconStatus size={14} style={{marginRight:"6px",verticalAlign:"middle"}} /> View in Item status →</button>
+              <span className="badge green">{`${filteredInventoryItems.length} ${t.itemsInInventory}`}</span>
+              <button className="btn" onClick={()=>go("status")}><IconStatus size={14} style={{marginRight:"6px",verticalAlign:"middle"}} /> {t.viewInItemStatus}</button>
             </div>
           </div>
 
-          {inventoryTab === "items" && (
-            <div className="cards" style={{gridTemplateColumns:"repeat(auto-fill, minmax(320px, 1fr))", gap:"18px"}}>
-              {filteredInventoryItems.map(item => (
-                <article className="purchase-card" key={item.id} style={{display:"flex", flexDirection:"column"}}>
-                  <div className="purchase-card-img-wrap" style={{position:"relative"}}>
-                    <img src={item.image} alt={item.name} className="purchase-card-img" onError={(e)=>{e.target.style.display="none";}} />
-                    <span 
-                      title={item.category}
-                      style={{position:"absolute", top:10, left:10, width:30, height:30, borderRadius:"50%", background:"#ffffff", border:"1.5px solid #e2ece8", display:"flex", alignItems:"center", justifyContent:"center", color:"#08766d", boxShadow:"0 2px 6px rgba(0,0,0,0.12)"}}
-                    >
-                      {item.category === "Crutches" ? <IconCrutches size={16} /> : item.category === "Walker" ? <IconWalker size={16} /> : item.category === "Hearing Aid" ? <IconHearingAid size={16} /> : <IconWheelchair size={16} />}
-                    </span>
-                  </div>
-
-                  <div className="purchase-card-top" style={{marginTop:10}}>
-                    <span className="badge green"><IconShieldCheck size={12} style={{marginRight:4, verticalAlign:"middle"}} />{item.cert}</span>
-                    <span className="badge">{item.condition}</span>
-                  </div>
-
-                  <div className="purchase-donor-tag" style={{margin:"6px 0"}}>
-                    <span>Donation ID: <b>{item.donationId}</b></span>
-                    <span>·</span>
-                    <span>Available: <b>{item.qtyAvailable} unit{item.qtyAvailable === 1 ? "" : "s"}</b></span>
-                  </div>
-
-                  <h3 style={{fontSize:"16px", margin:"4px 0 6px"}}>{item.name}</h3>
-                  <div className="purchase-specs" style={{fontSize:"12px", color:"#4a635d", marginBottom:6}}>{item.specs}</div>
-                  <div className="purchase-donor-note" style={{fontSize:"11.5px", fontStyle:"italic", color:"#607b74", marginBottom:8}}>“{item.donorNote}”</div>
-                  <small style={{color:"#80938e", display:"block", marginBottom:12}}>📍 Dispatch Hub: {item.hub}</small>
-
-                  <div className="purchase-price-box" style={{marginTop:"auto", marginBottom:12}}>
-                    <div className="price-main-row">
-                      <span className="price-amount">{money(item.handlingPrice)}</span>
-                      <span className="price-original">{money(item.originalValue)}</span>
-                      <span className="badge gold">Refurbished</span>
-                    </div>
-                    <span className="price-subsidy-note">✓ Or ₹0 {t.freeWithUdid}</span>
-                  </div>
-
-                  <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
-                    <button 
-                      type="button" 
-                      className="btn primary" 
-                      style={{padding:"9px 10px", fontSize:"12px", display:"inline-flex", alignItems:"center", justifyContent:"center", gap:5}}
-                      onClick={()=>{ setPurchasingItem(item); go("purchase"); }}
-                    >
-                      <IconPurchase size={14} /> Claim / Buy
-                    </button>
-                    <button 
-                      type="button" 
-                      className="btn" 
-                      style={{padding:"9px 10px", fontSize:"12px", display:"inline-flex", alignItems:"center", justifyContent:"center", gap:5}}
-                      onClick={()=>{
-                        const dev = devices.find(d => d.id === item.donationId) || { id: item.donationId, name: item.name, category: item.category, condition: item.condition, state: "Telangana", district: "Hyderabad", date: "Recent", status: "Quality Certified", qty: item.qtyAvailable, stage: 6, image: item.image };
-                        setSelectedStatusDevice(dev);
-                        go("status");
-                      }}
-                    >
-                      <IconStatus size={14} /> View Status
-                    </button>
-                  </div>
-                </article>
-              ))}
-              {!filteredInventoryItems.length && (
-                <p className="panel empty" style={{gridColumn:"1/-1"}}>No inventory items match your search or category filter.</p>
-              )}
-            </div>
-          )}
-
-          {inventoryTab === "categories" && (
-            <div className="device-types-grid">
-              {visibleDeviceTypes.map(type => {
-                const inStock = devices.filter(d => d.category.toLowerCase().includes(type.category.toLowerCase())).reduce((acc, curr) => acc + (Number(curr.qty) || 1), 0);
-                const IconComp = typeof type.icon === "function" ? type.icon : IconWheelchair;
-                return (
-                  <div 
-                    className="device-type-card" 
-                    key={type.id}
-                    style={{cursor:"pointer", display:"flex", flexDirection:"column"}}
-                    onClick={()=>setSelectedDeviceType(type)}
+          <div className="cards" style={{gridTemplateColumns:"repeat(auto-fill, minmax(320px, 1fr))", gap:"18px"}}>
+            {filteredInventoryItems.map(item => (
+              <article className="purchase-card" key={item.id} style={{display:"flex", flexDirection:"column"}}>
+                <div className="purchase-card-img-wrap" style={{position:"relative"}}>
+                  <img src={item.image} alt={item.name} className="purchase-card-img" onError={(e)=>{e.target.style.display="none";}} />
+                  <span 
+                    title={item.category}
+                    style={{position:"absolute", top:10, left:10, width:30, height:30, borderRadius:"50%", background:"#ffffff", border:"1.5px solid #e2ece8", display:"flex", alignItems:"center", justifyContent:"center", color:"#08766d", boxShadow:"0 2px 6px rgba(0,0,0,0.12)"}}
                   >
-                    <div className="type-card-header">
-                      <div className="type-header-left">
-                        <div className="device-emoji"><IconComp size={24} /></div>
-                        <div>
-                          <h3>{type.title}</h3>
-                          <span className="badge gold">{type.badge}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="type-card-image-wrap" style={{marginBottom:"12px"}}>
-                      <img src={type.image} alt={type.title} className="type-card-img" onError={(e)=>{e.target.style.display="none";}} />
-                    </div>
-
-                    <div className="type-counter-badge">
-                      📦 <b>{inStock}</b> unit{inStock === 1 ? "" : "s"} tracked in system
-                    </div>
-
-                    <p className="type-card-summary" style={{margin:"0 0 16px", flex:1}}>{type.summary}</p>
-
-                    <div className="type-card-actions" onClick={e=>e.stopPropagation()}>
-                      <button 
-                        type="button" 
-                        className="btn primary" 
-                        style={{flex:1, padding:"10px 14px", display:"inline-flex", alignItems:"center", justifyContent:"center", gap:"6px"}}
-                        onClick={()=>setSelectedDeviceType(type)}
-                      >
-                        <IconSearch size={14} /> View Details & Specs →
-                      </button>
-                      <button 
-                        type="button" 
-                        className="btn" 
-                        style={{padding:"10px 12px"}}
-                        onClick={()=>setModal("donate")}
-                        title={`Donate ${type.title}`}
-                      >
-                        <IconDonations size={14} style={{marginRight:"4px"}} /> Donate
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-
-          {selectedDeviceType && (
-            <Modal 
-              title={`${selectedDeviceType.title}: Technical Specifications & Details`} 
-              close={()=>setSelectedDeviceType(null)}
-            >
-              <div style={{padding:"4px 0"}}>
-                <div style={{display:"flex", gap:"18px", alignItems:"center", marginBottom:"18px", flexWrap:"wrap"}}>
-                  <img 
-                    src={selectedDeviceType.image} 
-                    alt={selectedDeviceType.title} 
-                    style={{width:120, height:95, objectFit:"contain", borderRadius:12, background:"#f8faf9", border:"1px solid #e2ece8", padding:6}} 
-                  />
-                  <div style={{flex:1, minWidth:220}}>
-                    <div className="line" style={{marginBottom:6}}>
-                      <span className="badge gold">{selectedDeviceType.badge}</span>
-                      <span className="badge green">{selectedDeviceType.category}</span>
-                    </div>
-                    <h3 style={{margin:"0 0 6px", fontSize:"20px"}}>{selectedDeviceType.title}</h3>
-                    <p style={{margin:0, fontSize:"12.5px", color:"#4a635d"}}>{selectedDeviceType.summary}</p>
-                  </div>
+                    {item.category === "Crutches" ? <IconCrutches size={16} /> : item.category === "Walker" ? <IconWalker size={16} /> : item.category === "Hearing Aid" ? <IconHearingAid size={16} /> : <IconWheelchair size={16} />}
+                  </span>
                 </div>
 
-                <p style={{fontSize:"13px", color:"#37474f", lineHeight:"1.6", marginBottom:"18px"}}>
-                  {selectedDeviceType.description}
-                </p>
-
-                <div className="type-section-title" style={{fontSize:"13px", fontWeight:"700", color:"#0d5f52", margin:"16px 0 10px"}}>
-                  📋 Common Models & Configurations
-                </div>
-                <div style={{display:"grid", gap:"8px", marginBottom:"18px"}}>
-                  {selectedDeviceType.variants.map((v, i) => (
-                    <div key={i} style={{background:"#f8faf9", padding:"10px 14px", borderRadius:"10px", border:"1px solid #e7eeeb"}}>
-                      <b style={{color:"#1e332f"}}>{v.name}</b>
-                      <div style={{fontSize:"12px", color:"#546e7a", marginTop:"3px"}}>{v.desc}</div>
-                    </div>
-                  ))}
+                <div className="purchase-card-top" style={{marginTop:10}}>
+                  <span className="badge green"><IconShieldCheck size={12} style={{marginRight:4, verticalAlign:"middle"}} />{translate(item.cert)}</span>
+                  <span className="badge">{translate(item.condition)}</span>
                 </div>
 
-                <div className="type-section-title" style={{fontSize:"13px", fontWeight:"700", color:"#0d5f52", margin:"16px 0 10px"}}>
-                  📦 Refurbished Stock Items in this Category ({donatedStoreCatalog.filter(d => d.category.toLowerCase().includes(selectedDeviceType.category.toLowerCase())).length} items)
-                </div>
-                <div style={{display:"grid", gap:"8px", marginBottom:"18px"}}>
-                  {donatedStoreCatalog.filter(d => d.category.toLowerCase().includes(selectedDeviceType.category.toLowerCase())).map(item => (
-                    <div key={item.id} style={{background:"#f0fbf7", padding:"10px 14px", borderRadius:"10px", border:"1px solid #c9eee5", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:"10px"}}>
-                      <div>
-                        <b style={{color:"#08766d"}}>{item.name}</b>
-                        <div style={{fontSize:"11.5px", color:"#546e7a", marginTop:"2px"}}>{item.specs} · Refurbished at: {item.hub}</div>
-                      </div>
-                      <div style={{display:"flex", alignItems:"center", gap:"8px"}}>
-                        <span className="badge green">{item.condition}</span>
-                        <span style={{fontWeight:"700", fontSize:"12.5px", color:"#08766d"}}>{money(item.handlingPrice)}</span>
-                        <button type="button" className="btn primary" style={{padding:"6px 10px", fontSize:"11px"}} onClick={()=>{ setSelectedDeviceType(null); setPurchasingItem(item); go("purchase"); }}>Claim / Buy</button>
-                      </div>
-                    </div>
-                  ))}
-                  {!donatedStoreCatalog.filter(d => d.category.toLowerCase().includes(selectedDeviceType.category.toLowerCase())).length && (
-                    <p style={{fontSize:"12px", color:"#78909c", margin:0}}>No items currently in stock for this category.</p>
-                  )}
+                <div className="purchase-donor-tag" style={{margin:"6px 0"}}>
+                  <span>{t.donationIdLabel} <b>{item.donationId}</b></span>
+                  <span>·</span>
+                  <span>{t.availableLabel} <b>{item.qtyAvailable} {item.qtyAvailable === 1 ? (t.unit || translate("unit")) : (t.units || translate("units"))}</b></span>
                 </div>
 
-                <div className="type-section-title" style={{fontSize:"13px", fontWeight:"700", color:"#0d5f52", margin:"16px 0 10px"}}>
-                  ⚙️ Technical Engineering Specifications
-                </div>
-                <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"10px", marginBottom:"18px"}}>
-                  {selectedDeviceType.specs.map((s, i) => (
-                    <div key={i} style={{background:"#f0fbf7", padding:"9px 12px", borderRadius:"8px", border:"1px solid #c9eee5"}}>
-                      <small style={{display:"block", color:"#08766d", fontWeight:"700", fontSize:"10.5px", textTransform:"uppercase"}}>{s.label}</small>
-                      <span style={{fontWeight:"600", fontSize:"12.5px", color:"#143d36"}}>{s.value}</span>
-                    </div>
-                  ))}
+                <h3 style={{fontSize:"16px", margin:"4px 0 6px"}}>{translate(item.name)}</h3>
+                <div className="purchase-specs" style={{fontSize:"12px", color:"#4a635d", marginBottom:8}}>{translate(item.specs)}</div>
+                <small style={{color:"#80938e", display:"block", marginBottom:12}}>📍 {t.dispatchHubLabel} {translate(item.hub)}</small>
+
+                <div className="inventory-stock-box" style={{marginTop:"auto", marginBottom:12, padding:"8px 12px", background:"#f0fbf7", borderRadius:10, border:"1px solid #d2ece5", display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:6}}>
+                  <span className="badge green"><IconShieldCheck size={12} style={{marginRight:3, verticalAlign:"middle"}} /> {t.readyForAllocation}</span>
+                  <span className="badge gold">{t.refurbished}</span>
                 </div>
 
-                <div className="type-section-title" style={{fontSize:"13px", fontWeight:"700", color:"#0d5f52", margin:"16px 0 10px"}}>
-                  🛡️ 7-Stage Safety & Quality Criteria
-                </div>
-                <ul style={{paddingLeft:"20px", fontSize:"12.5px", color:"#37474f", lineHeight:"1.7", marginBottom:"22px"}}>
-                  {selectedDeviceType.checklist.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-
-                <div className="actions" style={{display:"flex", gap:"10px", borderTop:"1px solid #e7eeeb", paddingTop:"16px"}}>
+                <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
                   <button 
                     type="button" 
                     className="btn primary" 
-                    onClick={()=>{setSelectedDeviceType(null);setModal("donate");}}
+                    style={{padding:"9px 10px", fontSize:"12px", display:"inline-flex", alignItems:"center", justifyContent:"center", gap:5}}
+                    onClick={()=>{ setPurchasingItem(item); go("purchase"); }}
                   >
-                    <IconDonations size={15} style={{marginRight:6, verticalAlign:"middle"}} /> Donate {selectedDeviceType.title}
+                    <IconPurchase size={14} /> {t.claimDevice}
                   </button>
                   <button 
                     type="button" 
                     className="btn" 
-                    onClick={()=>{setSelectedDeviceType(null);go("status");}}
+                    style={{padding:"9px 10px", fontSize:"12px", display:"inline-flex", alignItems:"center", justifyContent:"center", gap:5}}
+                    onClick={()=>{
+                      const dev = devices.find(d => d.id === item.donationId) || { id: item.donationId, name: item.name, category: item.category, condition: item.condition, state: "Telangana", district: "Hyderabad", date: "Recent", status: "Quality Certified", qty: item.qtyAvailable, stage: 6, image: item.image };
+                      setSelectedStatusDevice(dev);
+                      go("status");
+                    }}
                   >
-                    <IconStatus size={14} style={{marginRight:6, verticalAlign:"middle"}} /> Track in Item status →
-                  </button>
-                  <button 
-                    type="button" 
-                    className="btn" 
-                    onClick={()=>setSelectedDeviceType(null)}
-                  >
-                    Close
+                    <IconStatus size={14} /> {t.viewStatus}
                   </button>
                 </div>
-              </div>
-            </Modal>
-          )}
+              </article>
+            ))}
+            {!filteredInventoryItems.length && (
+              <p className="panel empty" style={{gridColumn:"1/-1"}}>{t.noInventoryMatch}</p>
+            )}
+          </div>
         </>}
 
         {page==="purchase"&&<>{pageHeader(t.purchaseEyebrow,t.purchaseTitle,t.purchaseSub)}
-          <div className="notice">ⓘ <b>Community Subsidized Store:</b> Donated items are provided at minimal refurbishment & sanitization handling charges, or <b>{t.freeWithUdid}</b>.</div>
+          <div className="notice" style={{background: profile?.udid ? "#f0fdf9" : "#fffbeb", borderColor: profile?.udid ? "#a3dfd1" : "#fde68a", color: profile?.udid ? "#0d5f52" : "#92400e", display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:"12px"}}>
+            <div style={{flex:1, minWidth:"280px"}}>
+              {profile?.udid ? (
+                <>
+                  <div style={{fontWeight:"700", marginBottom:"3px", display:"flex", alignItems:"center", gap:"6px"}}>
+                    <IconShieldCheck size={16} color="#0d5f52" />
+                    <span>{t.verifiedBeneficiaryBadge}: {profile.name} (UDID: <code>{profile.udid}</code>)</span>
+                  </div>
+                  <p style={{margin:0, fontSize:"12px"}}>{t.udidVerifiedSuccess} — {t.purchaseNotice}</p>
+                </>
+              ) : (
+                <>
+                  <div style={{fontWeight:"700", marginBottom:"3px", display:"flex", alignItems:"center", gap:"6px", color:"#b45309"}}>
+                    <IconShieldCheck size={16} color="#b45309" />
+                    <span>{t.udidVerificationTitle} ({t.udidRequiredBadge})</span>
+                  </div>
+                  <p style={{margin:0, fontSize:"12px"}}>{t.udidOnlyNotice}</p>
+                </>
+              )}
+            </div>
+            {!profile?.udid && (
+              <button type="button" className="btn primary" style={{fontSize:"11px", padding:"6px 12px", whiteSpace:"nowrap"}} onClick={() => { setProfileTab("upgrade"); go("profile"); }}>
+                {t.upgradeProfile} →
+              </button>
+            )}
+          </div>
 
           <div className="purchase-tabs">
             <button 
@@ -2455,7 +2323,7 @@ export default function App() {
               </label>
               <div style={{flex:1, minWidth:"200px"}}>
                 <input 
-                  placeholder="⌕ Search donated items, models, hubs…" 
+                  placeholder={`⌕ ${t.searchPlaceholder}`} 
                   value={purchaseSearch} 
                   onChange={e=>setPurchaseSearch(e.target.value)} 
                 />
@@ -2473,25 +2341,30 @@ export default function App() {
                     <div className="device-emoji">
                       {item.category==="Crutches"?<IconCrutches size={22}/>:item.category==="Walker"?<IconWalker size={22}/>:item.category==="Hearing Aid"?<IconHearingAid size={22}/>:<IconWheelchair size={22}/>}
                     </div>
-                    <span className="badge green"><IconShieldCheck size={12} style={{marginRight:"4px",verticalAlign:"middle"}} />{item.cert}</span>
+                    <div style={{display:"flex", gap:"6px", alignItems:"center", flexWrap:"wrap"}}>
+                      <span className="badge green"><IconShieldCheck size={12} style={{marginRight:"4px",verticalAlign:"middle"}} />{translate(item.cert)}</span>
+                      <span className="badge" style={{background: profile?.udid ? "#ecfdf5" : "#fffbeb", color: profile?.udid ? "#047857" : "#b45309", border: profile?.udid ? "1px solid #a7f3d0" : "1px solid #fde68a", fontSize:"10px", fontWeight:"700"}}>
+                        {profile?.udid ? `✓ ${t.verifiedBeneficiaryBadge}` : `🔒 ${t.udidRequiredBadge}`}
+                      </span>
+                    </div>
                   </div>
 
                   <div className="purchase-donor-tag">
-                    <span>From Donation: <b>{item.donationId}</b></span>
+                    <span>{t.fromDonationLabel} <b>{item.donationId}</b></span>
                     <span>·</span>
-                    <span className="badge">{item.condition}</span>
+                    <span className="badge">{translate(item.condition)}</span>
                   </div>
 
-                  <h3>{item.name}</h3>
-                  <div className="purchase-specs">{item.specs}</div>
+                  <h3>{translate(item.name)}</h3>
+                  <div className="purchase-specs">{translate(item.specs)}</div>
                   <div className="purchase-donor-note">“{item.donorNote}”</div>
-                  <small style={{color:"#80938e", display:"block", marginBottom:"10px"}}>📍 Dispatch Hub: {item.hub}</small>
+                  <small style={{color:"#80938e", display:"block", marginBottom:"10px"}}>📍 {t.dispatchHubLabel} {translate(item.hub)}</small>
 
                   <div className="purchase-price-box">
                     <div className="price-main-row">
                       <span className="price-amount">{money(item.handlingPrice)}</span>
                       <span className="price-original">{money(item.originalValue)}</span>
-                      <span className="badge gold">Save {Math.round((1 - item.handlingPrice/item.originalValue)*100)}%</span>
+                      <span className="badge gold">{t.savePercent} {Math.round((1 - item.handlingPrice/item.originalValue)*100)}%</span>
                     </div>
                     <span className="price-subsidy-note">✓ Or ₹0 {t.freeWithUdid}</span>
                   </div>
@@ -2505,7 +2378,7 @@ export default function App() {
                   </button>
                 </article>
               ))}
-              {!availablePurchases.length&&<p className="panel empty" style={{gridColumn:"1/-1"}}>No donated items match your search.</p>}
+              {!availablePurchases.length&&<p className="panel empty" style={{gridColumn:"1/-1"}}>{t.noDonatedItemsMatch}</p>}
             </div>
           </>}
 
@@ -2513,56 +2386,59 @@ export default function App() {
             {purchases.map(ord => (
               <div className="order-card" key={ord.id}>
                 <div className="order-card-main">
-                  <div className="line" style={{marginBottom:"6px"}}>
+                  <div className="line" style={{marginBottom:"6px", flexWrap:"wrap", gap:"6px"}}>
                     <span className="badge">{ord.id}</span>
                     <span className="badge green">{ord.status}</span>
                     <span className="badge">{ord.category}</span>
+                    <span className="badge" style={{background:"#ecfdf5", color:"#047857", border:"1px solid #a7f3d0", fontWeight:"700"}}>
+                      ♿ UDID: {ord.udid || (profile?.udid) || "TG0120119950012345"} ({t.verifiedBeneficiaryBadge})
+                    </span>
                   </div>
                   <h3>{ord.name}</h3>
                   <p style={{margin:"4px 0", fontSize:"12px", color:"#596f6a"}}>
-                    <strong>Recipient:</strong> {ord.recipient} · <strong>Ordered on:</strong> {ord.date}
+                    <strong>{t.recipientLabel}</strong> {ord.recipient} · <strong>{t.orderedOnLabel}</strong> {ord.date}
                   </p>
                   <p style={{margin:"4px 0", fontSize:"12px", color:"#596f6a"}}>
-                    <strong>Delivery Address:</strong> {ord.address}
+                    <strong>{t.deliveryAddressLabel}</strong> {ord.address}
                   </p>
                   <p style={{margin:"4px 0", fontSize:"12px", color:"#596f6a"}}>
-                    <strong>Payment Method:</strong> {ord.paymentMethod} · <strong>Amount Paid:</strong> {money(ord.price)}
+                    <strong>{t.paymentMethodLabel}</strong> {ord.paymentMethod} · <strong>{t.amountPaidLabel}</strong> {money(ord.price)}
                   </p>
                 </div>
                 <div className="order-card-meta">
                   <div>
-                    <small style={{display:"block", color:"#899b96", marginBottom:"4px"}}>TRACKING ID</small>
+                    <small style={{display:"block", color:"#899b96", marginBottom:"4px"}}>{t.trackingIdLabel}</small>
                     <span className="order-track-id">{ord.trackingId}</span>
                   </div>
                   <div style={{textAlign:"right", marginTop:"12px"}}>
-                    <small style={{color:"#0d796e", fontWeight:"700", display:"block"}}>Estimated Delivery</small>
+                    <small style={{color:"#0d796e", fontWeight:"700", display:"block"}}>{t.estimatedDeliveryLabel}</small>
                     <b style={{fontSize:"13px"}}>{ord.eta}</b>
                   </div>
                 </div>
               </div>
             ))}
-            {!purchases.length&&<p className="panel empty">No purchase orders placed yet.</p>}
+            {!purchases.length&&<p className="panel empty">{t.noOrdersPlaced}</p>}
           </div>}
         </>}
 
-        {page==="requests"&&<>{pageHeader(t.requestsEyebrow,t.requestsTitle,t.requestsSub,<button className="btn primary" onClick={()=>setModal("request")}><IconNGO size={15} style={{marginRight:"6px",verticalAlign:"middle"}} /> Request equipment</button>)}
+        {page==="requests"&&<>{pageHeader(t.requestsEyebrow,t.requestsTitle,t.requestsSub,<button className="btn primary" onClick={()=>setModal("request")}><IconNGO size={15} style={{marginRight:"6px",verticalAlign:"middle"}} /> {t.requestEquipmentBtn}</button>)}
           <div className="toolbar" style={{marginBottom:"18px"}}>
             <input 
-              placeholder="Search by NGO name, district, or equipment..." 
+              placeholder={t.searchNgoPlaceholder} 
               value={ngoSearch} 
               onChange={e=>setNgoSearch(e.target.value)}
               style={{maxWidth:360}}
             />
-            <label>Filter by State:
+            <label>{t.filterState}:
               <select value={ngoStateFilter} onChange={e=>setNgoStateFilter(e.target.value)}>
-                <option>All states</option>
+                <option>{t.allStates}</option>
+                <option>Karnataka</option>
                 <option>Telangana</option>
                 <option>Andhra Pradesh</option>
-                <option>Karnataka</option>
               </select>
             </label>
             <div style={{marginLeft:"auto", display:"flex", alignItems:"center", gap:"10px"}}>
-              <span className="badge green">15 Registered Partner NGOs</span>
+              <span className="badge green">{t.registeredPartnerNgos}</span>
             </div>
           </div>
 
@@ -2571,7 +2447,7 @@ export default function App() {
               {ngoRequests
                 .filter(n => {
                   const matchSearch = (n.org + " " + n.district + " " + n.equipment + " " + n.coordinator).toLowerCase().includes(ngoSearch.toLowerCase());
-                  const matchState = ngoStateFilter === "All states" || n.state === ngoStateFilter;
+                  const matchState = ngoStateFilter === "All states" || ngoStateFilter === t.allStates || n.state === ngoStateFilter;
                   return matchSearch && matchState;
                 })
                 .map(ngo => (
@@ -2580,11 +2456,11 @@ export default function App() {
                       <div>
                         <div className="line" style={{marginBottom:4}}>
                           <code>{ngo.regNo}</code>
-                          <span className="badge green">✓ Verified NGO Partner</span>
-                          <span className={`badge ${ngo.status === "Approved" ? "green" : "gold"}`}>{ngo.status}</span>
+                          <span className="badge green">✓ {t.verifiedNgoPartner}</span>
+                          <span className={`badge ${ngo.status === "Approved" ? "green" : "gold"}`}>{translate(ngo.status)}</span>
                         </div>
                         <h3 style={{margin:"0 0 4px", fontSize:"18px", color:"#1a2e2b"}}>{ngo.org}</h3>
-                        <p style={{margin:0, fontSize:"12px", color:"#546e7a"}}>Service Area: <b>{ngo.district}, {ngo.state}</b> · Coordinator: {ngo.coordinator}</p>
+                        <p style={{margin:0, fontSize:"12px", color:"#546e7a"}}>{t.serviceAreaLabel} <b>{ngo.district}, {ngo.state}</b> · {t.coordinatorLabel} {ngo.coordinator}</p>
                       </div>
                       <button 
                         type="button" 
@@ -2596,14 +2472,14 @@ export default function App() {
                           setToast(`Request for ${ngo.org} marked as ${newStatus}.`);
                         }}
                       >
-                        {ngo.status === "Approved" ? "✓ Approved for Dispatch" : "Mark Reviewed / Approve"}
+                        {ngo.status === "Approved" ? `✓ ${t.approvedForDispatch}` : t.markReviewedApprove}
                       </button>
                     </div>
 
                     <div style={{background:"#f8faf9", padding:"12px 14px", borderRadius:"10px", border:"1px solid #e7eeeb", margin:"12px 0"}}>
                       <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"6px", flexWrap:"wrap", gap:"8px"}}>
-                        <span style={{fontSize:"12.5px", fontWeight:"700", color:"#08766d"}}>📦 Equipment Needed: {ngo.equipment}</span>
-                        <span className="badge gold">Quantity: {ngo.qty} units</span>
+                        <span style={{fontSize:"12.5px", fontWeight:"700", color:"#08766d"}}>📦 {t.equipmentNeededLabel} {ngo.equipment}</span>
+                        <span className="badge gold">{t.quantityLabel} {ngo.qty} units</span>
                       </div>
                       <p style={{fontSize:"12px", color:"#425b55", margin:0, lineHeight:"1.5"}}>
                         {ngo.purpose}
@@ -2611,8 +2487,8 @@ export default function App() {
                     </div>
 
                     <div style={{fontSize:"11.5px", color:"#78909c", display:"flex", justifyContent:"space-between", flexWrap:"wrap", gap:"6px"}}>
-                      <span>📞 {ngo.contact}</span>
-                      <span>📅 Requested: {ngo.date}</span>
+                      <span>📞 {t.contactLabel} {ngo.contact}</span>
+                      <span>📅 {t.requestedDateLabel} {ngo.date}</span>
                     </div>
                   </div>
                 ))}
@@ -2620,16 +2496,16 @@ export default function App() {
 
             <div>
               <div className="panel" style={{position:"sticky", top:"90px"}}>
-                <div className="eyebrow" style={{color:"#08766d"}}>COMMUNITY ALLOCATIONS</div>
-                <h3 style={{margin:"6px 0 10px"}}>15 Verified NGOs Empaneled</h3>
-                <p>Divyang-Sahayak coordinates directly with registered disability rehabilitation trusts, palliative hospices, and rural community centres.</p>
+                <div className="eyebrow" style={{color:"#08766d"}}>{t.communityAllocations}</div>
+                <h3 style={{margin:"6px 0 10px"}}>{t.verifiedNgosEmpaneled}</h3>
+                <p>{t.ngoPanelDesc}</p>
                 <hr style={{border:0, borderTop:"1px solid #e7eeeb", margin:"16px 0"}}/>
-                <h4 style={{margin:"0 0 8px", fontSize:"13px"}}>Beneficiary Privacy Standards</h4>
+                <h4 style={{margin:"0 0 8px", fontSize:"13px"}}>{t.privacyStandardsHeading}</h4>
                 <p style={{fontSize:"12px", color:"#546e7a", lineHeight:"1.5", margin:"0 0 14px"}}>
-                  Use district-level location for public lists. Exact home addresses and UDID certificates are shared only with dispatched logistics agents.
+                  {t.privacyStandardsDesc}
                 </p>
                 <div className="type-section-title" style={{fontSize:"12px", fontWeight:"700", color:"#08766d", margin:"14px 0 8px"}}>
-                  Allocation Workflow
+                  {t.allocationWorkflowHeading}
                 </div>
                 <div className="badge-wrap" style={{gap:"6px"}}>
                   {["1. Request Submitted", "2. Technician Review", "3. Inventory Match", "4. Doorstep Dispatch"].map(x => (
@@ -2641,17 +2517,17 @@ export default function App() {
           </div>
         </>}
 
-        {page==="notifications"&&<>{pageHeader(t.notificationsEyebrow,t.notificationsTitle,t.notificationsSub,<button className="btn" onClick={markAllRead}><IconCheck size={14} style={{marginRight:"4px",verticalAlign:"middle"}} /> Mark all read</button>)}<div className="panel">{notices.map((n,i)=><div className="notification" key={i}><div className="device-emoji small"><IconBell size={18} /></div><div className="notification-body"><div className="line"><b>{n.title}</b>{n.unread&&badge("Unread","green")}</div><p>{n.body}</p><small>{n.time}</small></div>{n.unread&&<button className="btn" onClick={()=>setNotices(prev=>prev.map((x,j)=>j===i?{...x,unread:false}:x))}><IconCheck size={13} style={{marginRight:"4px",verticalAlign:"middle"}} /> Read</button>}</div>)}</div></>}
+        {page==="notifications"&&<>{pageHeader(t.notificationsEyebrow,t.notificationsTitle,t.notificationsSub,<button className="btn" onClick={markAllRead}><IconCheck size={14} style={{marginRight:"4px",verticalAlign:"middle"}} /> {t.markAllRead}</button>)}<div className="panel">{notices.map((n,i)=><div className="notification" key={i}><div className="device-emoji small"><IconBell size={18} /></div><div className="notification-body"><div className="line"><b>{n.title}</b>{n.unread&&badge(t.unread,"green")}</div><p>{n.body}</p><small>{n.time}</small></div>{n.unread&&<button className="btn" onClick={()=>setNotices(prev=>prev.map((x,j)=>j===i?{...x,unread:false}:x))}><IconCheck size={13} style={{marginRight:"4px",verticalAlign:"middle"}} /> {t.readBtn}</button>}</div>)}</div></>}
 
-        {page==="resale"&&<>{pageHeader(t.resaleEyebrow,t.resaleTitle,t.resaleSub)}<div className="notice">ⓘ <b>Refurbished Aids Catalog:</b> Certified pre-owned mobility aids inspected and tested by authorized technicians.</div><div className="panel filters"><div><input placeholder={t.searchPlaceholder} value={search} onChange={e=>setSearch(e.target.value)}/><small>{visibleListings.length} available listings</small></div><label>{t.filterCategory}<select value={category} onChange={e=>setCategory(e.target.value)}>{[t.allCategories,"Wheelchair","Crutches","Walker","Hearing Aid"].map(x=><option key={x}>{x}</option>)}</select></label><label>Sort by price<select value={sort} onChange={e=>setSort(e.target.value)}><option>Lowest price</option><option>Highest price</option></select></label></div><div className="cards">{visibleListings.map(i=><article className="listing" key={i.id}><div className="listing-card-img-wrap"><img src={i.image} alt={i.name} className="listing-card-img" onError={(e)=>{e.target.style.display="none";}} /></div><div className="listing-top"><div className="device-emoji">{i.category==="Crutches"?<IconCrutches size={22}/>:i.category==="Walker"?<IconWalker size={22}/>:i.category==="Hearing Aid"?<IconHearingAid size={22}/>:<IconWheelchair size={22}/>}</div>{badge("Certified Pre-owned","green")}</div><div className="eyebrow">{i.category.toUpperCase()} · {i.id}</div>
+        {page==="resale"&&<>{pageHeader(t.resaleEyebrow,t.resaleTitle,t.resaleSub)}<div className="notice">ⓘ <b>{t.navResale}:</b> {t.resaleNotice}</div><div className="panel filters"><div><input placeholder={t.searchPlaceholder} value={search} onChange={e=>setSearch(e.target.value)}/><small>{visibleListings.length} {t.availableListings}</small></div><label>{t.filterCategory}<select value={category} onChange={e=>setCategory(e.target.value)}>{[t.allCategories,"Wheelchair","Crutches","Walker","Hearing Aid"].map(x=><option key={x}>{x}</option>)}</select></label><label>{t.sortByPrice}<select value={sort} onChange={e=>setSort(e.target.value)}><option>{t.lowestPrice}</option><option>{t.highestPrice}</option></select></label></div><div className="cards">{visibleListings.map(i=><article className="listing" key={i.id}><div className="listing-card-img-wrap"><img src={i.image} alt={i.name} className="listing-card-img" onError={(e)=>{e.target.style.display="none";}} /></div><div className="listing-top"><div className="device-emoji">{i.category==="Crutches"?<IconCrutches size={22}/>:i.category==="Walker"?<IconWalker size={22}/>:i.category==="Hearing Aid"?<IconHearingAid size={22}/>:<IconWheelchair size={22}/>}</div>{badge(t.certifiedPreOwned,"green")}</div><div className="eyebrow">{i.category.toUpperCase()} · {i.id}</div>
                 <h3>{i.name}</h3>
                 <div className="price">{money(i.price)}</div>
                 <div className="line" style={{margin:"6px 0 8px", gap:"6px"}}>
                   {i.size && <span className="badge" style={{background:"#f0fdf9", color:"#08766d", border:"1px solid #bde5dc"}}>{i.size}</span>}
                   {i.material && <span className="badge" style={{background:"#f8faf9", color:"#455a64", border:"1px solid #cfd8dc"}}>{i.material}</span>}
                 </div>
-                <p>{badge("Sanitized & Tested","green")} <span className="muted">{i.location}</span></p>
-                <p className="desc">{i.desc}</p><div className="actions"><button className="btn" onClick={()=>setToast(`${i.name}: Specifications verified. Hub dispatch available.`)}>{t.viewDetails}</button><button className="btn primary" onClick={()=>setToast("Your interest has been registered! A hub coordinator will contact you.")}>Register Interest</button></div></article>)}</div></>}
+                <p>{badge(t.sanitizedAndTested,"green")} <span className="muted">{i.location}</span></p>
+                <p className="desc">{i.desc}</p><div className="actions"><button className="btn" onClick={()=>setToast(`${i.name}: Specifications verified. Hub dispatch available.`)}>{t.viewDetails}</button><button className="btn primary" onClick={()=>setToast("Your interest has been registered! A hub coordinator will contact you.")}>{t.registerInterest}</button></div></article>)}</div></>}
 
         {page==="profile"&&<>{pageHeader(t.profileEyebrow,t.profileTitle,t.profileSub)}
           <div className="profile-layout">
@@ -2663,7 +2539,7 @@ export default function App() {
                   className={`purchase-tab-btn ${profileTab === "profile" ? "active" : ""}`}
                   onClick={() => setProfileTab("profile")}
                 >
-                  <IconProfile size={15} /> 👤 Profile Settings
+                  <IconProfile size={15} /> 👤 {t.tabProfileSettings}
                 </button>
                 <button 
                   type="button" 
@@ -2671,8 +2547,8 @@ export default function App() {
                   onClick={() => setProfileTab("upgrade")}
                   style={profileTab === "upgrade" ? {} : {borderColor:"#a3dfd1", background:"#f0fdf9", color:"#08766d"}}
                 >
-                  <IconBadgeCheck size={16} /> ⚡ Upgrade Your Profile
-                  {profile?.udid && !profile?.isProfileUpgraded && <span style={{fontSize:"10px", background:"#d97706", color:"#fff", padding:"1px 7px", borderRadius:"10px", marginLeft:"6px"}}>Action Required</span>}
+                  <IconBadgeCheck size={16} /> ⚡ {t.tabUpgradeProfile}
+                  {profile?.udid && !profile?.isProfileUpgraded && <span style={{fontSize:"10px", background:"#d97706", color:"#fff", padding:"1px 7px", borderRadius:"10px", marginLeft:"6px"}}>{t.actionRequired}</span>}
                 </button>
               </div>
 
@@ -2680,28 +2556,28 @@ export default function App() {
                 <>
                   <div className="upgrade-panel-header" style={{marginBottom:"18px"}}>
                     <div>
-                      <div className="eyebrow">GOVERNMENT UDID BENEFICIARY</div>
-                      <h2>Upgrade Your Profile</h2>
+                      <div className="eyebrow">{t.udidBeneficiaryEyebrow}</div>
+                      <h2>{t.upgradeProfileTitle}</h2>
                       <p className="sub">
                         {profile?.isProfileUpgraded 
-                          ? "✓ Your UDID beneficiary details are complete & verified for 100% free mobility aids." 
-                          : "Complete your remaining contact, disability category, and doorstep delivery address to claim 100% free mobility equipment."}
+                          ? `✓ ${t.profileUpgradedBadge}` 
+                          : t.upgradeProfileSub}
                       </p>
                     </div>
                     <div>
                       <span className={`badge ${profile?.isProfileUpgraded ? "green" : "gold"}`}>
-                        {profile?.isProfileUpgraded ? "✓ Profile Upgraded (Free Claim Active)" : "⚠️ Incomplete Details"}
+                        {profile?.isProfileUpgraded ? `✓ ${t.profileUpgradedBadge}` : `⚠️ ${t.incompleteDetailsBadge}`}
                       </span>
                     </div>
                   </div>
 
                   <form onSubmit={submitUpgradeProfile}>
                     <div className="notice" style={{background:"#f0fdf9", borderColor:"#a3dfd1", color:"#0d5f52", marginBottom:"18px"}}>
-                      <strong>♿ Basic Credentials Saved:</strong> UDID Number: <b>{profile?.udid || "TG0120119950012345"}</b> · Registered Name: <b>{profile?.name}</b>
+                      <strong>♿ {t.basicCredentialsSaved}</strong> UDID Number: <b>{profile?.udid || "TG0120119950012345"}</b> · Registered Name: <b>{profile?.name}</b>
                     </div>
 
                     <div className="type-section-title" style={{margin:"14px 0 10px", fontSize:"13px", fontWeight:"700", color:"#0d5f52"}}>
-                      📞 1. Contact Information
+                      📞 1. {t.contactInformation}
                     </div>
                     <div className="form-grid">
                       <Field label="Mobile / Phone Number (linked to UDID) *" name="mobile" required placeholder="e.g. +91 98490 12345" defaultValue={profile?.mobile||""} />
@@ -2709,7 +2585,7 @@ export default function App() {
                     </div>
 
                     <div className="type-section-title" style={{margin:"18px 0 10px", fontSize:"13px", fontWeight:"700", color:"#0d5f52"}}>
-                      ♿ 2. Disability Category & Required Mobility Aid
+                      ♿ 2. {t.disabilityCategoryAid}
                     </div>
                     <div className="form-grid">
                       <SelectField 
@@ -2755,21 +2631,21 @@ export default function App() {
                     </div>
 
                     <div className="type-section-title" style={{margin:"18px 0 10px", fontSize:"13px", fontWeight:"700", color:"#0d5f52"}}>
-                      📍 3. Doorstep Delivery Address
+                      📍 3. {t.doorstepDeliveryAddress}
                     </div>
                     <div className="form-grid">
-                      <SelectField label="State *" name="state" options={["Telangana","Andhra Pradesh","Karnataka","Other"]} defaultValue={profile?.state||"Telangana"} />
-                      <Field label="District *" name="district" required placeholder="e.g. Hyderabad, Warangal, Vijayawada" defaultValue={profile?.district||""} />
+                      <SelectField label="State *" name="state" options={["Karnataka","Telangana","Andhra Pradesh","Other"]} defaultValue={profile?.state||"Karnataka"} />
+                      <Field label="District *" name="district" required placeholder="e.g. Bengaluru, Hyderabad, Vijayawada" defaultValue={profile?.district||""} />
                       <Field label="PIN Code *" name="pin" required pattern="[0-9]{6}" maxLength="6" placeholder="6 digits PIN" defaultValue={profile?.pin||""} />
                       <Field label="Complete Delivery Address & Landmark *" name="address" required placeholder="Door number, street, area, landmark for delivery agent" wide defaultValue={profile?.address||""} />
                     </div>
 
                     <div className="actions" style={{marginTop:"20px", display:"flex", alignItems:"center", gap:"12px"}}>
                       <button type="submit" className="btn primary" style={{padding:"11px 20px", fontSize:"13px"}}>
-                        <IconCheck size={14} style={{marginRight:6, verticalAlign:"middle"}} /> Save & Upgrade Your Profile
+                        <IconCheck size={14} style={{marginRight:6, verticalAlign:"middle"}} /> {t.saveAndUpgradeProfile}
                       </button>
                       <button type="button" className="btn" onClick={()=>go("purchase")}>
-                        <IconPurchase size={14} style={{marginRight:4, verticalAlign:"middle"}} /> Claim Free Aid in Store →
+                        <IconPurchase size={14} style={{marginRight:4, verticalAlign:"middle"}} /> {t.claimFreeAidInStore}
                       </button>
                     </div>
                   </form>
@@ -2778,42 +2654,42 @@ export default function App() {
                 <>
                   <div className="upgrade-panel-header" style={{marginBottom:"18px"}}>
                     <div>
-                      <div className="eyebrow">USER PROFILE</div>
-                      <h2>General Profile Settings</h2>
-                      <p className="sub">Manage your personal details, contact address, and account preferences.</p>
+                      <div className="eyebrow">{t.userProfileEyebrow}</div>
+                      <h2>{t.generalProfileTitle}</h2>
+                      <p className="sub">{t.generalProfileSub}</p>
                     </div>
                     <div>
-                      <span className="badge green">Active Account</span>
+                      <span className="badge green">{t.activeAccount}</span>
                     </div>
                   </div>
 
                   <div className="notice" style={{background:"#f0fdf9", borderColor:"#a3dfd1", color:"#0d5f52", marginBottom:"18px", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:"10px"}}>
                     <div>
-                      <strong>♿ Are you a Person with Disability?</strong> You can upgrade your profile to claim 100% free mobility aids with your UDID Card.
+                      <strong>♿ {t.profileNoticePrompt}</strong>
                     </div>
                     <button type="button" className="btn primary" style={{padding:"6px 12px", fontSize:"12px"}} onClick={() => setProfileTab("upgrade")}>
-                      <IconBadgeCheck size={14} style={{marginRight:4, verticalAlign:"middle"}} /> Switch to Upgrade Your Profile →
+                      <IconBadgeCheck size={14} style={{marginRight:4, verticalAlign:"middle"}} /> {t.switchToUpgradeProfile}
                     </button>
                   </div>
 
                   <form onSubmit={submitProfile}>
                     <div className="form-grid">
-                      <Field label="Full Name *" name="name" required defaultValue={profile?.name||""} placeholder="Full Name" />
-                      <Field label="Email Address *" name="email" type="email" required defaultValue={profile?.email||""} placeholder="you@example.com" />
-                      <Field label="Phone / Mobile Number *" name="mobile" required placeholder="+91 98000 00000" defaultValue={profile?.mobile||""} />
-                      <SelectField label="Account Type" name="type" options={["Donor","NGO","Recipient / caregiver","Volunteer","Divyangjan Beneficiary"]} defaultValue={profile?.type||"Donor"} />
-                      <SelectField label="State *" name="state" options={["Telangana","Andhra Pradesh","Karnataka","Other"]} defaultValue={profile?.state||"Telangana"} />
-                      <Field label="District *" name="district" required placeholder="e.g. Hyderabad" defaultValue={profile?.district||""} />
-                      <Field label="PIN Code *" name="pin" required pattern="[0-9]{6}" maxLength="6" placeholder="6 digits" defaultValue={profile?.pin||""} />
-                      <Field label="Complete Delivery Address *" name="address" required placeholder="Door number, street, area, landmark" wide defaultValue={profile?.address||""} />
+                      <Field label={`${t.fullName} *`} name="name" required defaultValue={profile?.name||""} placeholder="Full Name" />
+                      <Field label={`${t.email} *`} name="email" type="email" required defaultValue={profile?.email||""} placeholder="you@example.com" />
+                      <Field label={`${t.mobile} *`} name="mobile" required placeholder="+91 98000 00000" defaultValue={profile?.mobile||""} />
+                      <SelectField label={t.accountType} name="type" options={["Donor","NGO","Recipient / caregiver","Volunteer","Divyangjan Beneficiary"]} defaultValue={profile?.type||"Donor"} />
+                      <SelectField label={`${t.state} *`} name="state" options={["Karnataka","Telangana","Andhra Pradesh","Other"]} defaultValue={profile?.state||"Karnataka"} />
+                      <Field label={`${t.district} *`} name="district" required placeholder="e.g. Bengaluru" defaultValue={profile?.district||""} />
+                      <Field label={`${t.pinCode} *`} name="pin" required pattern="[0-9]{6}" maxLength="6" placeholder="6 digits" defaultValue={profile?.pin||""} />
+                      <Field label={`${t.address} *`} name="address" required placeholder="Door number, street, area, landmark" wide defaultValue={profile?.address||""} />
                     </div>
 
                     <div className="actions" style={{marginTop:"20px", display:"flex", alignItems:"center", gap:"12px"}}>
                       <button type="submit" className="btn primary">
-                        <IconCheck size={14} style={{marginRight:6, verticalAlign:"middle"}} /> Save Profile Settings
+                        <IconCheck size={14} style={{marginRight:6, verticalAlign:"middle"}} /> {t.saveProfileSettings}
                       </button>
                       <button type="button" className="btn danger" onClick={handleLogout}>
-                        <IconLogout size={14} style={{marginRight:4, verticalAlign:"middle"}} /> Logout
+                        <IconLogout size={14} style={{marginRight:4, verticalAlign:"middle"}} /> {t.logout}
                       </button>
                     </div>
                   </form>
@@ -2824,12 +2700,12 @@ export default function App() {
             <div>
               {/* Prominent Upgrade Your Profile Option Card on right */}
               <div className="panel" style={{background:"linear-gradient(135deg, #f0fdf9 0%, #e6f7f2 100%)", borderColor:"#9de0d2", marginBottom:"18px"}}>
-                <div className="eyebrow" style={{color:"#08766d"}}>BENEFICIARY ONBOARDING</div>
-                <h3 style={{margin:"6px 0 8px", color:"#0a584f"}}>⚡ Upgrade Your Profile</h3>
+                <div className="eyebrow" style={{color:"#08766d"}}>{t.beneficiaryOnboarding}</div>
+                <h3 style={{margin:"6px 0 8px", color:"#0a584f"}}>⚡ {t.tabUpgradeProfile}</h3>
                 <p style={{color:"#3f665e", fontSize:"12px", lineHeight:"1.45", margin:"0 0 12px"}}>
                   {profile?.isProfileUpgraded 
-                    ? "✓ Your UDID beneficiary details are verified. You are eligible for 100% free mobility equipment." 
-                    : "Complete your disability details, linked mobile number, and doorstep delivery address to claim free aids."}
+                    ? `✓ ${t.profileUpgradedBadge}` 
+                    : t.upgradeProfileSub}
                 </p>
                 <button 
                   type="button" 
@@ -2837,24 +2713,25 @@ export default function App() {
                   onClick={() => setProfileTab("upgrade")}
                   style={{display:"inline-flex", alignItems:"center", justifyContent:"center", gap:"6px", padding:"10px 14px", fontWeight:"700"}}
                 >
-                  <IconBadgeCheck size={16} /> Upgrade Your Profile Option →
+                  <IconBadgeCheck size={16} /> {t.tabUpgradeProfile} →
                 </button>
               </div>
 
               <div className="panel">
-                <h3>Account & Security</h3>
-                <p><b>Role:</b> {profile?.type || "Donor"}</p>
-                <p><b>Status:</b> <span className="badge green">Verified & Active</span></p>
-                <button className="btn" style={{marginTop:"8px"}} onClick={()=>setToast("Password reset link sent to your registered email.")}>Reset Password</button>
+                <h3>{t.accountAndSecurity}</h3>
+                <p><b>{t.role}:</b> {profile?.type || "Donor"}</p>
+                <p><b>{t.thStatus}:</b> <span className="badge green">{t.verifiedAndActive}</span></p>
+                <button className="btn" style={{marginTop:"8px"}} onClick={()=>setToast("Password reset link sent to your registered email.")}>{t.resetPassword}</button>
               </div>
 
               <div className="panel">
-                <h3>Language & Accessibility</h3>
-                <label>Language
+                <h3>{t.languageAndAccessibility}</h3>
+                <label>{t.language}
                   <select value={language} onChange={e=>handleLanguageChange(e.target.value)}>
                     <option value="English">English</option>
                     <option value="తెలుగు">తెలుగు</option>
                     <option value="हिन्दी">हिन्दी</option>
+                    <option value="ಕನ್ನಡ">ಕನ್ನಡ</option>
                   </select>
                 </label>
                 <label className="check"><input type="checkbox" checked={largeText} onChange={e=>setLargeText(e.target.checked)}/> {t.largerText}</label>
@@ -2863,25 +2740,35 @@ export default function App() {
             </div>
           </div>
         </>}
-        <footer className="footer"><span>About</span><span>How it works</span><span>Contact</span><span>FAQs</span><span>Privacy</span><span>Terms</span><span>Accessibility</span><span>Report an issue</span></footer>
+        <footer className="footer"><span>{t.footerAbout}</span><span>{t.footerHowItWorks}</span><span>{t.footerContact}</span><span>{t.footerFaqs}</span><span>{t.footerPrivacy}</span><span>{t.footerTerms}</span><span>{t.footerAccessibility}</span><span>{t.footerReportIssue}</span></footer>
       </section>
     </main>
-    {modal==="donate"&&<Modal title="Donate a device" close={()=>setModal("")}><form onSubmit={submitDonation}><div className="form-grid"><Field label="Device name *" name="name" required placeholder="e.g. Manual wheelchair"/><SelectField label="Category" name="category" options={["Wheelchair","Crutches","Walker","Hearing Aid","Other"]}/><SelectField label="Condition" name="condition" options={["Working","Repairable","Needs inspection"]}/><Field label="Quantity *" name="qty" type="number" min="1" required defaultValue="1"/><SelectField label="State" name="state" options={["Telangana","Andhra Pradesh","Karnataka","Other"]}/><Field label="District *" name="district" required placeholder="District"/></div><div className="actions"><button className="btn primary"><IconDonations size={15} style={{marginRight:"6px",verticalAlign:"middle"}} /> Save donation</button><button type="button" className="btn" onClick={()=>setModal("")}>Cancel</button></div></form></Modal>}
-    {modal==="request"&&<Modal title="Request equipment" close={()=>setModal("")}><form onSubmit={e=>{e.preventDefault();setModal("");setToast("Equipment request registered successfully. Our logistics coordinator will review it.");}}><Field label="Organization name *" name="org" required/><SelectField label="Equipment needed" name="equipment" options={["Wheelchair","Crutches","Walker","Hearing Aid"]}/><Field label="Quantity *" name="qty" type="number" min="1" required defaultValue="1"/><Field label="District *" name="district" required/><button className="btn primary"><IconNGO size={15} style={{marginRight:"6px",verticalAlign:"middle"}} /> Submit request</button></form></Modal>}
-    {editingDevice&&<Modal title={`Edit donation: ${editingDevice.id}`} close={()=>setEditingDevice(null)}><form onSubmit={submitEditDonation}><div className="notice">Editing donation record <b>{editingDevice.id}</b>.</div><div className="form-grid"><Field label="Device name *" name="name" required defaultValue={editingDevice.name}/><SelectField label="Category" name="category" options={["Wheelchair","Crutches","Walker","Hearing Aid","Other"]} defaultValue={editingDevice.category}/><SelectField label="Condition" name="condition" options={["Working","Repairable","Needs inspection"]} defaultValue={editingDevice.condition}/><Field label="Quantity *" name="qty" type="number" min="1" required defaultValue={editingDevice.qty}/><SelectField label="State" name="state" options={["Telangana","Andhra Pradesh","Karnataka","Other"]} defaultValue={editingDevice.state}/><Field label="District *" name="district" required defaultValue={editingDevice.district}/><SelectField label="Lifecycle Stage" name="stage" options={STAGES.map(s=>`${s.step} - ${s.title}`)} defaultValue={`${editingDevice.stage||1} - ${STAGES.find(s=>s.step===(editingDevice.stage||1))?.title||""}`} wide/></div><div className="actions"><button className="btn primary"><IconCheck size={15} style={{marginRight:"6px",verticalAlign:"middle"}} /> Save changes</button><button type="button" className="btn" onClick={()=>setEditingDevice(null)}>Cancel</button></div></form></Modal>}
-    {purchasingItem&&<Modal title={`Purchase / Claim: ${purchasingItem.name}`} close={()=>setPurchasingItem(null)}><form onSubmit={submitPurchase}><div className="notice"><b>Donation Origin:</b> {purchasingItem.donationId} · Refurbished & certified at {purchasingItem.hub}.</div><div className="form-grid"><Field label="Recipient Full Name *" name="name" required placeholder="Full name" defaultValue={profile?.name}/><Field label="Mobile Number *" name="mobile" required placeholder="+91 90000 00000" defaultValue={profile?.mobile}/><SelectField label="State *" name="state" options={["Telangana","Andhra Pradesh","Karnataka","Other"]} defaultValue={profile?.state||"Telangana"}/><Field label="District *" name="district" required placeholder="District" defaultValue={profile?.district}/><Field label="PIN Code *" name="pin" required pattern="[0-9]{6}" maxLength="6" placeholder="6 digits" defaultValue={profile?.pin}/><SelectField label="Payment / Subsidy Mode *" name="paymentMethod" options={[`Subsidized handling fee (${money(purchasingItem.handlingPrice)} via UPI / Netbanking)`,"100% Free with UDID Disability Certificate",`Cash on Delivery upon physical inspection (${money(purchasingItem.handlingPrice)})`]} wide defaultValue={profile?.udid ? "100% Free with UDID Disability Certificate" : undefined}/><Field label="UDID Disability Card No. (if claiming 100% free)" name="udid" placeholder="e.g. TG12345678901234" wide defaultValue={profile?.udid||""}/><Field label="Complete Delivery Address *" name="address" required placeholder="House/Flat, street, landmark" wide defaultValue={profile?.address}/></div><div className="actions"><button className="btn primary">Confirm order →</button><button type="button" className="btn" onClick={()=>setPurchasingItem(null)}>Cancel</button></div></form></Modal>}
-    {modal==="upgradeProfile"&&<Modal title={`Upgrade Profile: Beneficiary & Disability Details ${profile?.udid ? `(${profile.udid})` : ""}`} close={()=>setModal("")}>
+    {modal==="donate"&&<Modal title={t.donateDeviceBtn || "Donate a device"} close={()=>setModal("")}><form onSubmit={submitDonation}><div className="form-grid"><Field label={`${t.deviceName || "Device name"} *`} name="name" required placeholder="e.g. Manual wheelchair"/><SelectField label={t.category || "Category"} name="category" options={["Wheelchair","Crutches","Walker","Hearing Aid","Other"].map(translate)}/><SelectField label={t.condition || "Condition"} name="condition" options={["Working","Repairable","Needs inspection"].map(translate)}/><Field label={`${t.quantity || "Quantity"} *`} name="qty" type="number" min="1" required defaultValue="1"/><SelectField label={t.state || "State"} name="state" options={["Telangana","Andhra Pradesh","Karnataka","Other"].map(translate)}/><Field label={`${t.district || "District"} *`} name="district" required placeholder="District"/></div><div className="actions"><button className="btn primary"><IconDonations size={15} style={{marginRight:"6px",verticalAlign:"middle"}} /> {t.saveDonation || "Save donation"}</button><button type="button" className="btn" onClick={()=>setModal("")}>{t.cancel || "Cancel"}</button></div></form></Modal>}
+    {modal==="request"&&<Modal title={t.requestEquipmentBtn || "Request equipment"} close={()=>setModal("")}><form onSubmit={e=>{e.preventDefault();setModal("");setToast("Equipment request registered successfully. Our logistics coordinator will review it.");}}><Field label={`${t.organizationName || "Organization name"} *`} name="org" required/><SelectField label={t.equipmentNeededLabel || "Equipment needed"} name="equipment" options={["Wheelchair","Crutches","Walker","Hearing Aid"]}/><Field label={`${t.quantity || "Quantity"} *`} name="qty" type="number" min="1" required defaultValue="1"/><Field label={`${t.district || "District"} *`} name="district" required/><button className="btn primary"><IconNGO size={15} style={{marginRight:"6px",verticalAlign:"middle"}} /> {t.submitRequest || "Submit request"}</button></form></Modal>}
+    {editingDevice&&<Modal title={`${t.edit || "Edit"}: ${editingDevice.id}`} close={()=>setEditingDevice(null)}><form onSubmit={submitEditDonation}><div className="notice">{translate("Editing donation record")} <b>{editingDevice.id}</b>.</div><div className="form-grid"><Field label={`${t.deviceName || "Device name"} *`} name="name" required defaultValue={editingDevice.name}/><SelectField label={t.category || "Category"} name="category" options={["Wheelchair","Crutches","Walker","Hearing Aid","Other"]} defaultValue={editingDevice.category}/><SelectField label={t.condition || "Condition"} name="condition" options={["Working","Repairable","Needs inspection"]} defaultValue={editingDevice.condition}/><Field label={`${t.quantity || "Quantity"} *`} name="qty" type="number" min="1" required defaultValue={editingDevice.qty}/><SelectField label={t.state || "State"} name="state" options={["Telangana","Andhra Pradesh","Karnataka","Other"].map(translate)} defaultValue={editingDevice.state}/><Field label={`${t.district || "District"} *`} name="district" required defaultValue={editingDevice.district}/><SelectField label={t.lifecycleStage || "Lifecycle Stage"} name="stage" options={stages.map(s=>`${s.step} - ${s.title}`)} defaultValue={`${editingDevice.stage||1} - ${stages.find(s=>s.step===(editingDevice.stage||1))?.title||""}`} wide/></div><div className="actions"><button className="btn primary"><IconCheck size={15} style={{marginRight:"6px",verticalAlign:"middle"}} /> {t.saveChanges || "Save changes"}</button><button type="button" className="btn" onClick={()=>setEditingDevice(null)}>{t.cancel || "Cancel"}</button></div></form></Modal>}
+    {purchasingItem && (
+      <PurchaseClaimModal 
+        item={purchasingItem}
+        profile={profile}
+        onClose={() => setPurchasingItem(null)}
+        onSubmit={submitPurchase}
+        t={t}
+        isValidUdidNumber={isValidUdidNumber}
+        sampleUdidHolders={sampleUdidHolders}
+      />
+    )}
+    {modal==="upgradeProfile"&&<Modal title={`${t.upgradeProfileTitle || "Upgrade Profile"}: ${profile?.udid ? `(${profile.udid})` : ""}`} close={()=>setModal("")}>
       <form onSubmit={submitUpgradeProfile}>
         <div className="notice" style={{background:"#f0fdf9", borderColor:"#a3dfd1", color:"#0d5f52"}}>
-          ⓘ <b>Upgrade Beneficiary Profile:</b> Complete the remaining contact, disability verification, and doorstep delivery details below to qualify for 100% free refurbished equipment.
+          ⓘ <b>{t.upgradeProfileTitle || "Upgrade Beneficiary Profile"}:</b> {t.upgradeProfileSub || "Complete the remaining contact, disability verification, and doorstep delivery details below to qualify for 100% free refurbished equipment."}
         </div>
         <div className="form-grid">
-          <Field label="UDID Card Number" name="udidNumber" defaultValue={profile?.udid || "TG0120119950012345"} placeholder="e.g. TG0120119950012345" />
-          <Field label="Name of User (as per UDID Card) *" name="name" required defaultValue={profile?.name || ""} placeholder="Full Name" />
-          <Field label="Mobile Number (linked to UDID) *" name="mobile" required placeholder="+91 98000 00000" defaultValue={profile?.mobile || ""} />
-          <Field label="Email Address (optional)" name="email" type="email" placeholder="you@example.com" defaultValue={profile?.email || ""} />
+          <Field label={t.udidNumberLabel || "UDID Card Number"} name="udidNumber" defaultValue={profile?.udid || "TG0120119950012345"} placeholder="e.g. TG0120119950012345" />
+          <Field label={t.nameOfUser || "Name of User (as per UDID Card) *"} name="name" required defaultValue={profile?.name || ""} placeholder="Full Name" />
+          <Field label={`${t.mobile || "Mobile Number"} *`} name="mobile" required placeholder="+91 98000 00000" defaultValue={profile?.mobile || ""} />
+          <Field label={`${t.email || "Email Address"}`} name="email" type="email" placeholder="you@example.com" defaultValue={profile?.email || ""} />
           <SelectField 
-            label="Disability Category *" 
+            label={t.disabilityTypeLabel || "Disability Category *"} 
             name="disabilityType" 
             options={[
               "Locomotor Disability",
@@ -2896,7 +2783,7 @@ export default function App() {
             defaultValue={profile?.disabilityType || "Locomotor Disability"} 
           />
           <Field 
-            label="Disability Percentage (%) *" 
+            label={t.disabilityPercentLabel || "Disability Percentage (%) *"} 
             name="disabilityPercent" 
             required 
             type="number" 
@@ -2906,7 +2793,7 @@ export default function App() {
             defaultValue={profile?.disabilityPercent || 75} 
           />
           <SelectField 
-            label="Required Mobility Device *" 
+            label={t.requiredAidLabel || "Required Mobility Device *"} 
             name="requiredAid" 
             options={[
               "Certified Manual Wheelchair",
@@ -2919,16 +2806,16 @@ export default function App() {
             ]} 
             defaultValue={profile?.requiredAid || "Certified Manual Wheelchair"} 
           />
-          <SelectField label="State *" name="state" options={["Telangana","Andhra Pradesh","Karnataka","Other"]} defaultValue={profile?.state || "Telangana"} />
-          <Field label="District *" name="district" required placeholder="e.g. Hyderabad" defaultValue={profile?.district || ""} />
-          <Field label="PIN code *" name="pin" required pattern="[0-9]{6}" maxLength="6" placeholder="6 digits" defaultValue={profile?.pin || ""} />
-          <Field label="Complete Delivery Address *" name="address" required placeholder="Door number, street, landmark for doorstep delivery" wide defaultValue={profile?.address || ""} />
+          <SelectField label={`${t.state || "State"} *`} name="state" options={["Telangana","Andhra Pradesh","Karnataka","Other"]} defaultValue={profile?.state || "Telangana"} />
+          <Field label={`${t.district || "District"} *`} name="district" required placeholder="e.g. Hyderabad" defaultValue={profile?.district || ""} />
+          <Field label={`${t.pinCode || "PIN code"} *`} name="pin" required pattern="[0-9]{6}" maxLength="6" placeholder="6 digits" defaultValue={profile?.pin || ""} />
+          <Field label={`${t.completeDeliveryAddress || "Complete Delivery Address"} *`} name="address" required placeholder="Door number, street, landmark for doorstep delivery" wide defaultValue={profile?.address || ""} />
         </div>
         <div className="actions" style={{marginTop:"18px"}}>
           <button type="submit" className="btn primary">
-            <IconCheck size={14} style={{marginRight:6, verticalAlign:"middle"}} /> Save & Upgrade Profile
+            <IconCheck size={14} style={{marginRight:6, verticalAlign:"middle"}} /> {t.saveAndUpgradeProfile || "Save & Upgrade Profile"}
           </button>
-          <button type="button" className="btn" onClick={()=>setModal("")}>Cancel</button>
+          <button type="button" className="btn" onClick={()=>setModal("")}>{t.cancel || "Cancel"}</button>
         </div>
       </form>
     </Modal>}
@@ -2939,8 +2826,253 @@ function Field({label,name,wide=false,...props}){return <label className={`field
 function SelectField({label,name,options,wide=false,defaultValue}){return <label className={`field ${wide?"wide":""}`}>{label}<select name={name} defaultValue={defaultValue||options[0]}>{options.map(o=><option key={o}>{o}</option>)}</select></label>}
 function Modal({title,close,children}){return <div className="modal-backdrop" onMouseDown={e=>{if(e.target===e.currentTarget)close();}}><div className="modal"><div className="modal-title"><h2>{title}</h2><button className="btn" onClick={close} type="button">✕</button></div>{children}</div></div>}
 
-function DeviceTimeline({ device, onUpdateStage }) {
+function PurchaseClaimModal({ item, profile, onClose, onSubmit, t, isValidUdidNumber, sampleUdidHolders, language = "English" }) {
+  const translate = (text) => tr(text, language);
+  const [udid, setUdid] = useState(profile?.udid || "");
+  const [isVerified, setIsVerified] = useState(Boolean(profile?.udid && isValidUdidNumber(profile.udid)));
+  const [udidError, setUdidError] = useState("");
+  const [name, setName] = useState(profile?.name || "");
+  const [mobile, setMobile] = useState(profile?.mobile || "");
+  const [stateVal, setStateVal] = useState(profile?.state || "Telangana");
+  const [district, setDistrict] = useState(profile?.district || "");
+  const [pin, setPin] = useState(profile?.pin || "");
+  const [address, setAddress] = useState(profile?.address || "");
+  const [paymentMethod, setPaymentMethod] = useState("100% Free with UDID Disability Certificate");
+
+  const runVerification = (testUdid) => {
+    const clean = String(testUdid || "").trim().toUpperCase();
+    if (!clean) {
+      setIsVerified(false);
+      setUdidError(t.udidInvalidError);
+      return false;
+    }
+    if (isValidUdidNumber(clean)) {
+      setIsVerified(true);
+      setUdidError("");
+      const matched = sampleUdidHolders.find(u => u.udid.toUpperCase() === clean);
+      if (matched) {
+        if (!name || name === "Divyangjan Cardholder") setName(matched.name);
+        if (!mobile) setMobile(matched.mobile);
+        if (!stateVal || stateVal === "Telangana") setStateVal(matched.state);
+        if (!district) setDistrict(matched.district);
+        if (!pin) setPin(matched.pin);
+        if (!address) setAddress(matched.address);
+      }
+      return true;
+    } else {
+      setIsVerified(false);
+      setUdidError(t.udidInvalidError);
+      return false;
+    }
+  };
+
+  const selectDemoUdid = (holder) => {
+    setUdid(holder.udid);
+    setName(holder.name);
+    setMobile(holder.mobile);
+    setStateVal(holder.state);
+    setDistrict(holder.district);
+    setPin(holder.pin);
+    setAddress(holder.address);
+    setIsVerified(true);
+    setUdidError("");
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!isVerified || !isValidUdidNumber(udid)) {
+      setUdidError(t.udidInvalidError);
+      return;
+    }
+    onSubmit(e);
+  };
+
+  return (
+    <Modal title={`${t.buyClaimDevice || "Purchase / Claim"}: ${item.name}`} close={onClose}>
+      <form onSubmit={handleSubmit}>
+        {/* Verification Status Banner */}
+        {isVerified ? (
+          <div className="notice" style={{background:"#ecfdf5", borderColor:"#a7f3d0", color:"#065f46", marginBottom:"14px", display:"flex", alignItems:"center", gap:"10px"}}>
+            <IconShieldCheck size={20} color="#059669" />
+            <div>
+              <b>{t.udidVerifiedSuccess}</b>
+              <div style={{fontSize:"12px", marginTop:"2px"}}>
+                {t.verifiedBeneficiaryBadge}: <code>{udid}</code> ({name || profile?.name || "UDID Cardholder"}) · {t.freeWithUdid}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="notice" style={{background:"#fffbeb", borderColor:"#fde68a", color:"#92400e", marginBottom:"14px"}}>
+            <div style={{display:"flex", alignItems:"center", gap:"8px", fontWeight:"700", marginBottom:"4px"}}>
+              <IconShieldCheck size={18} color="#d97706" />
+              <span>{t.udidVerificationTitle} ({t.udidRequiredBadge})</span>
+            </div>
+            <p style={{margin:0, fontSize:"12px"}}>{t.udidOnlyNotice}</p>
+          </div>
+        )}
+
+        {/* UDID Verification Input Section */}
+        <div style={{background:"#f8faf9", padding:"14px 16px", borderRadius:"10px", border:"1px solid #e2ece8", marginBottom:"16px"}}>
+          <label style={{fontSize:"13px", fontWeight:"700", color:"#1c3832", display:"block", marginBottom:"6px"}}>
+            {t.udidNumberLabel || "UDID Card Number (18 Digits) *"}
+          </label>
+          <div style={{display:"flex", gap:"8px", alignItems:"center"}}>
+            <input 
+              name="udid" 
+              required 
+              value={udid} 
+              maxLength={18}
+              onChange={e => {
+                const val = e.target.value.toUpperCase();
+                setUdid(val);
+                if (val.length >= 14) {
+                  runVerification(val);
+                } else {
+                  setIsVerified(false);
+                  setUdidError("");
+                }
+              }}
+              placeholder="e.g. TG0120119950012345" 
+              style={{
+                flex:1, 
+                fontSize:"14px", 
+                letterSpacing:"0.5px", 
+                fontWeight:"600",
+                borderColor: isVerified ? "#10b981" : udidError ? "#ef4444" : "#ccd9d4"
+              }}
+            />
+            <button 
+              type="button" 
+              className="btn" 
+              onClick={() => runVerification(udid)}
+              style={{
+                padding:"10px 14px", 
+                fontWeight:"700", 
+                background: isVerified ? "#ecfdf5" : "#08766d", 
+                color: isVerified ? "#065f46" : "#fff",
+                border: isVerified ? "1px solid #a7f3d0" : "none"
+              }}
+            >
+              {isVerified ? "✓ Verified" : t.verifyUdidBtn}
+            </button>
+          </div>
+
+          {udidError && (
+            <p style={{color:"#dc2626", fontSize:"12px", margin:"6px 0 0", fontWeight:"600"}}>
+              ✕ {udidError}
+            </p>
+          )}
+
+          {/* Quick Demo UDID Buttons */}
+          <div style={{marginTop:"10px", display:"flex", alignItems:"center", gap:"8px", flexWrap:"wrap"}}>
+            <small style={{color:"#6b7280", fontWeight:"600"}}>{translate(t.quickSampleUdid || "⚡ Instant Test UDID Cardholders:")}</small>
+            {sampleUdidHolders.map(h => (
+              <button 
+                key={h.udid} 
+                type="button" 
+                className="badge" 
+                style={{cursor:"pointer", background:"#fff", border:"1px solid #08766d", color:"#08766d", padding:"3px 8px", fontSize:"11px"}}
+                onClick={() => selectDemoUdid(h)}
+                title={`Use sample UDID for ${h.name}`}
+              >
+                + {h.udid.slice(0, 4)}… ({h.name})
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Recipient Details & Delivery */}
+        <div className="form-grid">
+          <Field 
+            label={`${t.recipientFullName || "Recipient Full Name"} *`} 
+            name="name" 
+            required 
+            placeholder="Full name as per UDID card" 
+            value={name} 
+            onChange={e=>setName(e.target.value)}
+          />
+          <Field 
+            label={`${t.mobile || "Mobile Number"} *`} 
+            name="mobile" 
+            required 
+            placeholder="+91 90000 00000" 
+            value={mobile} 
+            onChange={e=>setMobile(e.target.value)}
+          />
+          <SelectField 
+            label={`${t.state || "State"} *`} 
+            name="state" 
+            options={["Telangana","Andhra Pradesh","Karnataka","Other"]} 
+            defaultValue={stateVal}
+          />
+          <Field 
+            label={`${t.district || "District"} *`} 
+            name="district" 
+            required 
+            placeholder="District" 
+            value={district} 
+            onChange={e=>setDistrict(e.target.value)}
+          />
+          <Field 
+            label={`${t.pinCode || "PIN Code"} *`} 
+            name="pin" 
+            required 
+            pattern="[0-9]{6}" 
+            maxLength="6" 
+            placeholder="6 digits" 
+            value={pin} 
+            onChange={e=>setPin(e.target.value)}
+          />
+          <SelectField 
+            label={`${t.paymentSubsidyMode || "Payment / Subsidy Mode"} *`} 
+            name="paymentMethod" 
+            options={[
+              translate("100% Free with UDID Disability Certificate"),
+              `${translate("Subsidized handling fee")} (${money(item.handlingPrice)} via UPI / Netbanking)`,
+              `${translate("Cash on Delivery upon physical inspection")} (${money(item.handlingPrice)})`
+            ]} 
+            wide 
+            defaultValue={paymentMethod}
+          />
+          <Field 
+            label={`${t.completeDeliveryAddress || "Complete Delivery Address"} *`} 
+            name="address" 
+            required 
+            placeholder="House/Flat, street, landmark for doorstep delivery" 
+            wide 
+            value={address} 
+            onChange={e=>setAddress(e.target.value)}
+          />
+        </div>
+
+        <div className="actions" style={{marginTop:"18px"}}>
+          <button 
+            type="submit" 
+            className="btn primary" 
+            disabled={!isVerified}
+            style={{
+              opacity: isVerified ? 1 : 0.6, 
+              cursor: isVerified ? "pointer" : "not-allowed",
+              padding:"10px 18px",
+              fontWeight:"700"
+            }}
+          >
+            {isVerified ? (t.confirmOrderBtn || "Confirm order →") : `🔒 ${t.verifyUdidBtn} to Order`}
+          </button>
+          <button type="button" className="btn" onClick={onClose}>
+            {t.cancel || "Cancel"}
+          </button>
+        </div>
+      </form>
+    </Modal>
+  );
+}
+
+function DeviceTimeline({ device, onUpdateStage, stages = STAGES, t = translations.English, language = "English" }) {
+  const translate = (text) => tr(text, language);
   const currentStage = Number(device.stage) || 1;
+  const stageList = stages || STAGES;
+  const currentStageObj = stageList.find(s => s.step === currentStage) || stageList[0];
 
   return (
     <div className="device-timeline-wrapper" key={device.id}>
@@ -2967,15 +3099,15 @@ function DeviceTimeline({ device, onUpdateStage }) {
               <span className={`badge ${currentStage >= 6 ? "green" : currentStage >= 4 ? "gold" : ""}`}>
                 {device.status}
               </span>
-              <span className="badge">Stage {currentStage} of 7</span>
+              <span className="badge">{t.stage || "Stage"} {currentStage} / 7</span>
             </div>
-            <h3>{device.name}</h3>
+            <h3>{translate(device.name)}</h3>
             <p className="timeline-meta">
-              <span><strong>Category:</strong> {device.category}</span>
-              <span><strong>Condition:</strong> {device.condition}</span>
-              <span><strong>Quantity:</strong> {device.qty}</span>
-              <span><strong>Location:</strong> {device.district}, {device.state}</span>
-              <span><strong>Submitted:</strong> {device.date}</span>
+              <span><strong>{t.thDevice || "Category"}:</strong> {device.category}</span>
+              <span><strong>{t.filterCategory || "Condition"}:</strong> {device.condition}</span>
+              <span><strong>{t.quantityLabel || "Quantity"}:</strong> {device.qty}</span>
+              <span><strong>{t.thLocation || "Location"}:</strong> {device.district}, {device.state}</span>
+              <span><strong>{t.thSubmitted || "Submitted"}:</strong> {device.date}</span>
             </p>
           </div>
         </div>
@@ -2986,18 +3118,18 @@ function DeviceTimeline({ device, onUpdateStage }) {
             className="btn" 
             disabled={currentStage <= 1}
             onClick={() => onUpdateStage(device.id, currentStage - 1)}
-            title="Step back to previous stage"
+            title={translate("Step back to previous stage")}
           >
-            ← Previous stage
+            {t.prevStageBtn || "← Previous stage"}
           </button>
           <button 
             type="button"
             className="btn primary" 
             disabled={currentStage >= 7}
             onClick={() => onUpdateStage(device.id, currentStage + 1)}
-            title="Advance to next stage"
+            title={translate("Advance to next stage")}
           >
-            Advance stage →
+            {t.advanceStageBtn || "Advance stage →"}
           </button>
         </div>
       </div>
@@ -3005,7 +3137,7 @@ function DeviceTimeline({ device, onUpdateStage }) {
       {/* Horizontal Pipeline Stepper */}
       <div className="stepper-bar-container">
         <div className="stepper-track">
-          {STAGES.map((s) => {
+          {stageList.map((s) => {
             const isCompleted = s.step < currentStage;
             const isCurrent = s.step === currentStage;
             const isPending = s.step > currentStage;
@@ -3014,7 +3146,7 @@ function DeviceTimeline({ device, onUpdateStage }) {
                 key={s.step} 
                 className={`stepper-node ${isCompleted ? "completed" : ""} ${isCurrent ? "current" : ""} ${isPending ? "pending" : ""}`}
                 onClick={() => onUpdateStage(device.id, s.step)}
-                title={`Jump directly to Step ${s.step}: ${s.title}`}
+                title={`${t.stepLabel || "Step"} ${s.step}: ${s.title}`}
               >
                 <div className="stepper-dot">
                   {isCompleted ? "✓" : s.step}
@@ -3029,7 +3161,7 @@ function DeviceTimeline({ device, onUpdateStage }) {
       {/* Vertical Timeline Flow */}
       <div className="timeline-vertical-flow">
         <div className="timeline-vertical-spine" />
-        {STAGES.map((stage) => {
+        {stageList.map((stage) => {
           const isCompleted = stage.step < currentStage;
           const isCurrent = stage.step === currentStage;
           const isPending = stage.step > currentStage;
@@ -3039,7 +3171,7 @@ function DeviceTimeline({ device, onUpdateStage }) {
               key={stage.step} 
               className={`timeline-entry ${isCompleted ? "completed" : ""} ${isCurrent ? "current" : ""} ${isPending ? "pending" : ""}`}
               onClick={() => onUpdateStage(device.id, stage.step)}
-              title={`Click to set stage to: ${stage.title}`}
+              title={`${stage.title}`}
             >
               <div className="timeline-marker">
                 <div className="marker-icon">
@@ -3048,9 +3180,9 @@ function DeviceTimeline({ device, onUpdateStage }) {
               </div>
               <div className="timeline-content-bubble">
                 <div className="bubble-top">
-                  <h4 className="bubble-title">{stage.icon} Step {stage.step}: {stage.title}</h4>
+                  <h4 className="bubble-title">{stage.icon} {t.stepLabel || "Step"} {stage.step}: {stage.title}</h4>
                   <span className={`badge ${isCompleted ? "green" : isCurrent ? "gold" : ""}`}>
-                    {isCompleted ? "✓ Completed" : isCurrent ? "▶ Current Stage" : "Upcoming"}
+                    {isCompleted ? `✓ ${t.completed || "Completed"}` : isCurrent ? `▶ ${t.currentStage || "Current Stage"}` : (t.upcoming || "Upcoming")}
                   </span>
                 </div>
                 <p className="bubble-desc">{stage.desc}</p>
